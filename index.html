@@ -1,38 +1,22 @@
 ---
-layout: default
-title: Home
+layout: page
+title: About me
 ---
 
-<div class="posts">
-  {% for post in paginator.posts %}
-  <div class="post">
-    <h1 class="post-title">
-      <a href="{{ post.url }}">
-        {{ post.title }}
-      </a>
-    </h1>
+<div class="posts" id="about-me">
+<img src="{{site.baseurl }}public/img/pic1.jpg" id="pic" height="210" width="200" align="right" />
+<p>
+  I completed my bachelor's degree in Electrical and Electronics Engineering from <a href="http://dce.edu/">Delhi Technological University(Formerly Delhi College of Engineering)</a>. I presented my bachelor's thesis on "Hardware Implementation of Biological Neural Networks" working under guidance of Prof.Pragati Kumar.
+</p>
+<p>
+  I have also been associated with technology based startup <a href="http://mlabs.in/"> mLabs Research </a>. We worked on canonical implementation of memristor- 4th passive element, and presented a simple memristor setup. 
+</p>
 
-    <span class="post-date">{{ post.date | date_to_string }}</span>
+<p>
+Currently I am working on Refreshable braille display product at <a href="http://kritikalsolutions.com/"> Kritikal Solutions </a> associated with <a href="http://assistech.iitd.ernet.in/"> Assistive Tech Lab, Indian Institute of Technology,Delhi(IITD) </a>.
+This project aims to enusre mass availability of digital media for the visually impaired and deaf-blind community through affordable assistive reading/editing device. 
+</p>
 
-    {{ post.content }}
-  </div>
-  {% endfor %}
+
+
 </div>
-
-<div class="pagination">
-  {% if paginator.next_page %}
-    <a class="pagination-item older" href="{{ site.baseurl }}page{{paginator.next_page}}">Older</a>
-  {% else %}
-    <span class="pagination-item older">Older</span>
-  {% endif %}
-  {% if paginator.previous_page %}
-    {% if paginator.page == 2 %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}">Newer</a>
-    {% else %}
-      <a class="pagination-item newer" href="{{ site.baseurl }}page{{paginator.previous_page}}">Newer</a>
-    {% endif %}
-  {% else %}
-    <span class="pagination-item newer">Newer</span>
-  {% endif %}
-</div>
-

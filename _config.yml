@@ -1,21 +1,24 @@
 # Dependencies
 markdown:         redcarpet
+highlighter:	  pygments
 pygments:         true
 
 # Permalinks
-permalink:        pretty
+permalink:        /posts/:title
 
 # Setup
-title:            Lanyon
-tagline:          'A Jekyll theme'
-description:      'A reserved <a href="http://jekyllrb.com" target="_blank">Jekyll</a> theme that places the utmost gravity on content with a hidden drawer. Made by <a href="https://twitter.com/mdo" target="_blank">@mdo</a>.'
-url:              http://lanyon.getpoole.com
+title:            Parth Chadha
+tagline:          'Curious, Researcher & Maker'
+description:      '"The only way to do great work is to love what you do. If you havent found it yet, keep looking. Dont sette. As with all matters of the heart, you will know when you find it.- Steve Jobs"'
+url:              http://parthchadha.github.io
 baseurl:          '/'
 paginate:         5
+paginate:         /posts/page-:num
+
 
 author:
-  name:           'Mark Otto'
-  url:            https://twitter.com/mdo
+  name:           'Parth Chadha'
+  url:            https://twitter.com/parth_29
 
 # Custom vars
 version:          1.0.0

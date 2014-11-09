@@ -1,0 +1,26 @@
+---
+layout: page
+title: About me
+---
+
+<div class="posts" id="about-me">
+<img src="{{site.baseurl }}public/img/pic1.jpg" id="pic" height="210" width="200" align="right" />
+<p>
+  I completed my bachelor's degree in Electrical and Electronics Engineering from <a href="http://dce.edu/">Delhi Technological University(Formerly Delhi College of Engineering)</a>. I presented my bachelor's thesis on "Hardware Implementation of Biological Neural Networks" working under guidance of Prof.Pragati Kumar.
+</p>
+<p>
+  I have also been associated with technology based startup <a href="http://mlabs.in/"> mLabs Research </a>. We worked on canonical implementation of memristor- 4th passive element, and presented a simple memristor setup. 
+</p>
+
+<p>
+Currently I am working on Refreshable braille display product at <a href="http://kritikalsolutions.com/"> Kritikal Solutions </a> associated with <a href="http://assistech.iitd.ernet.in/"> Assistive Tech Lab, Indian Institute of Technology,Delhi(IITD) </a>.
+I am currently working as a research associate with Assistive Tech Lab, Indian Institute of Technogy(IITD)- Kritikal Soutions(IITD incubated company) on Refreshable braille display product under guidance of Dr. Rohan Paul, Dr. Balakrishnan and Ms. Prachi. This project would ensure mass availability of digital media for the visually impaired and deaf-blind community through affordable assistive reading/editing device. Refreshable braille and text-to-speech screen-reading technology would enhance the way visually impaired reader interacts with text and acquires information and thus maximizes the educational potential. I am particularly involved in technological implementation of SMA braille cells. Shape Memory Alloys(SMA) provide low-cost implementation of braille cells but poses further technological challenges of optimal driving solution and power optimization. I am involved in the embedded system implementation including circuits optimizing the driving behavior of SMA wire using real-time monitoring of I-V curve and platfroms such as ARM processor, CPLD and embedded linux. Other important challenge is to provide a user-interface(including the shape,dimensions and the digital content on braille) which is easy to use and work on. I am particularly involved in iterative development cycle of the product having inputs from social dimension into technology implementation via taking feedback, prototyping, testing and feedback collection. 
+
+Currently I am working on making an affordable refreshable braille display at <a href="http://kritikalsolutions.com/"> Kritikal solutions </a>. We are working in collaboration with <a href="http://assistech.iitd.ernet.in/"> Assistive technologies group </a> at IIT Delhi. 
+We are trying to solve an important problem faced by visually impaired people.
+
+</p>
+
+
+
+</div>
