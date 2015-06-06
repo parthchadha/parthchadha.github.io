@@ -1,27 +1,12 @@
-# Dependencies
-markdown:         redcarpet
-highlighter:	  pygments
-pygments:         true
+markdown: rdiscount
+permalink: /posts/:title
+rdiscount:
+  extensions: [smart]
 
-# Permalinks
-permalink:        /posts/:title
+gems:
+  - jekyll-sitemap
 
-# Setup
-title:            Parth Chadha
-tagline:          'Curious, Researcher & Maker'
-description:      '"The only way to do great work is to love what you do. If you havent found it yet, keep looking. Dont sette. As with all matters of the heart, you will know when you find it.- Steve Jobs"'
-url:              http://parthchadha.github.io
-baseurl:          '/'
-paginate:         5
-paginate:         /posts/page-:num
-
-
-author:
-  name:           'Parth Chadha'
-  url:            https://twitter.com/parth_29
-
-# Custom vars
-version:          1.0.0
-
-github:
-  repo:           https://github.com/poole/lanyon
+name: Parth Chadha
+url: http://parthchadha.wordpress.com
+description: A fantastic blog that is fantastic.
+twitter: parth_29
