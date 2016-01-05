@@ -1,6 +1,6 @@
 ---
 layout: post
-title: About
+title: About Me
 ---
 ## Intro
 I am a first year Master's student at Carnegie Mellon University in [ECE](https://www.ece.cmu.edu) department exploring computer vision under [Prof. Gary Overett](http://gary.overett.org). I am part of the double degree program [JIE](http://jie.sysu.edu.cn) in partnership with Sun-Yat Sen University, Guangzhou. 
