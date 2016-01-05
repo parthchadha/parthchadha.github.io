@@ -1,5 +1,6 @@
-markdown: rdiscount
-permalink: /posts/:title
+markdown: redcarpet
+highlighter: pygments
+#permalink: /posts/:title
 rdiscount:
   extensions: [smart]
 
@@ -7,6 +8,7 @@ gems:
   - jekyll-sitemap
 
 name: Parth Chadha
-url: http://parthchadha.wordpress.com
+url: http://parthchadha.github.io
 description: What if human brain is hackable?
 twitter: parth_29
+
