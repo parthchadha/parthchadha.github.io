@@ -17,6 +17,7 @@
     </div>
 
     {% include footer.html %}
+
     <script type="text/javascript" src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
   </body>
 
@@ -28,5 +29,23 @@
     ga('create', 'UA-66923490-1', 'auto');
     ga('send', 'pageview');
   </script>
+
+
+<script type="text/x-mathjax-config">
+  MathJax.Hub.Config({
+    TeX: {
+      equationNumbers: {
+        autoNumber: "AMS"
+      }
+    },
+    tex2jax: {
+      inlineMath: [ ['$','$'], ['\(', '\)'] ],
+      displayMath: [ ['$$','$$'] ],
+      processEscapes: true,
+    }
+  });
+</script>
+
+
 
 </html>

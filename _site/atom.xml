@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2016-01-05T23:57:32+05:30</updated>
+ <updated>2016-01-26T00:53:56+08:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -13,9 +13,105 @@
  
    
    <entry>
+     <title>Multimodal learning techniques</title>
+     <link href="http://parthchadha.github.io/posts/2016/01/21/visual_attention.html"/>
+     <updated>2016-01-21T00:00:00+08:00</updated>
+     <id>http://parthchadha.github.io/posts/2016/01/21/visual_attention</id>
+     <content type="html">&lt;h1&gt;Encoder-Decoder Network&lt;/h1&gt;
+
+&lt;p&gt;It is a genral framework using neural networks for mapping structred inputs to structured outputs. &lt;/p&gt;
+
+&lt;p&gt;What do we mean by structured outputs?&lt;/p&gt;
+
+&lt;p&gt;When we are dealing with problems such as machine translation, we need to map input(source language) to an output which has its own structure(translated language). As described in [1], this task is not only concerned in capturing semantics on source language, but also deals with forming coherent sentence in the translated language. &lt;/p&gt;
+
+&lt;h3&gt;Encoders&lt;/h3&gt;
+
+&lt;p&gt;The encoder reads the input data &lt;em&gt;x&lt;/em&gt; and maps into a representation &lt;em&gt;c&lt;/em&gt;. 
+$$
+c = f_{enc}(x)
+$$
+In case of input as image, we use a CNN as encoder and extract features vector or &lt;em&gt;cube&lt;/em&gt; from convolutional layers.&lt;/p&gt;
+
+&lt;h3&gt;Decoders&lt;/h3&gt;
+
+&lt;p&gt;Decoder generates output &lt;em&gt;y&lt;/em&gt; conditioned on context &lt;em&gt;c&lt;/em&gt; of the input.
+$$
+p(y \mid x) = f_{dec}(c)
+$$
+When are descibing image with natural language, we use RNN as a decoder.&lt;/p&gt;
+
+&lt;p&gt;As described in [1], RNN&amp;#39;s we use for this task are conditional language models (model distribution over sentences given an additional context &lt;em&gt;c&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;$$
+h_{t} = \phi_{\theta}(h_{t-1},x,c) 
+$$&lt;/p&gt;
+
+&lt;h3&gt;Issue with encoder-decoder framework&lt;/h3&gt;
+
+&lt;p&gt;Encoder always compresses the input vector into a single fixed dimensional representation vector &lt;em&gt;c&lt;/em&gt;.&lt;/p&gt;
+
+&lt;p&gt;Not all of the images contain the same amount of information, and hence to describe the varying amount of content in the image with a single fixed dimensional vector is not a good design.&lt;/p&gt;
+
+&lt;h2&gt;Attention mechanism&lt;/h2&gt;
+
+&lt;p&gt;To tackle above discussed issues, [1] introduces a concept of attention mechanism between encoder and decoder.&lt;/p&gt;
+
+&lt;p&gt;To incorporate structured representation of input, we want encoder to return a set of vectors describing a spatial or temporal component of input. 
+We refer $c$ to as context set, which is composed of fixed size vectors. The number of vectors in each example may vary. 
+$$
+c = {c_{1}, c_{2}, \dots, c_{M}}
+$$&lt;/p&gt;
+
+&lt;p&gt;The attention model controls what information is seen by the decoder and hence the pipeline is composed of encoder, attention model and then decoder.&lt;/p&gt;
+
+&lt;p&gt;The attention model takes input from hidden state of decoder at previous time step $z_{t-1}$ and score the context vector $c_{i}$. This signfies which vector $c_{i}$ is most relevant to focus on for next timestep.&lt;/p&gt;
+
+&lt;p&gt;$e_{i}^{t}$ signifies the scores and $\alpha_{i}^{t}$ signifies the attentian weights given to each element of context vector $c$. &lt;/p&gt;
+
+&lt;p&gt;Scores $e_{i}^{t}$ are calculated as: 
+$$e_{i}^{t} = f_{ATT}(z_{t-1}, c_{i}, {\alpha_{j}^{t-1} })$$&lt;/p&gt;
+
+&lt;p&gt;Attention weights $\alpha$ are calculated by applying &lt;em&gt;softmax&lt;/em&gt; to scores $e$. &lt;/p&gt;
+
+&lt;p&gt;Using attention weights and previous context vector, we can calculate the new context vector. In soft attention model, we calculate the new context vector as:
+$$
+c^{t} = \sum_{i=1}^{M} \alpha_{i}c_{i}
+$$&lt;/p&gt;
+
+&lt;p&gt;With the new context vector $c^{t}$, we calculate the new state of decoder, which is RNN in image captioning case. $h_{t} = \phi_{\theta}(h_{t-1},x_{t},c_{t})$.&lt;/p&gt;
+
+&lt;p&gt;This design of pipeline solves the problem of limited information being encoded by the encoder. Now based on decoder&amp;#39;s output at each time step, we caclculate the weightage given to spatial or temporal part of input. Hence, each vector output by encoder now describes particular region of input. Attention mechanism learns to chose which information needs to focussed at particular time step.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://heuritech.files.wordpress.com/2016/01/caption_attention1.png?w=470&quot; alt=&quot;Attention based model&quot;&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;em&gt;Figure: Attention based model. This image is copied from blog post by Heuritech [4]&lt;/em&gt;&lt;/p&gt;
+
+&lt;h3&gt;Notations for Recurrent neural network&lt;/h3&gt;
+
+&lt;p&gt;State transition is a function: 
+$$
+h_{t}^{l-1}, h_{t-1}^{l} \rightarrow h_{t}^{l} 
+$$&lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Describing Multimedia Content using Attention-based Encoder--Decoder Networks 
+Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Recurrent Neural Network Regularization&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Show, Attend and Tell: Neural Image Caption Generation with Visual Attention&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+   </entry>
+   
+ 
+   
+   <entry>
      <title>Torch-4 Recurrent Neural Networks, LSTM</title>
      <link href="http://parthchadha.github.io/posts/2016/01/04/torch_4.html"/>
-     <updated>2016-01-04T00:00:00+05:30</updated>
+     <updated>2016-01-04T00:00:00+08:00</updated>
      <id>http://parthchadha.github.io/posts/2016/01/04/torch_4</id>
      <content type="html">&lt;h2&gt;Why RNN/LSTM&lt;/h2&gt;
 
@@ -115,7 +211,7 @@ Please note this code is referenced from this &lt;a href=&quot;https://apaszke.g
    <entry>
      <title>Torch-3 Multi-layer perceptron</title>
      <link href="http://parthchadha.github.io/posts/2015/12/26/torch_3.html"/>
-     <updated>2015-12-26T00:00:00+05:30</updated>
+     <updated>2015-12-26T00:00:00+08:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/26/torch_3</id>
      <content type="html">&lt;p&gt;Torch provides collection of blocks or abstract layers for building deep neural networks. 
 The nn library abstracts the calculation of errors and backpropogation of the error signals.&lt;/p&gt;
@@ -266,7 +362,7 @@ The nn library abstracts the calculation of errors and backpropogation of the er
    <entry>
      <title>Torch-2 Data manipulation</title>
      <link href="http://parthchadha.github.io/posts/2015/12/25/torch_2.html"/>
-     <updated>2015-12-25T00:00:00+05:30</updated>
+     <updated>2015-12-25T00:00:00+08:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/25/torch_2</id>
      <content type="html">&lt;h2&gt;Basic data manipulation in Torch&lt;/h2&gt;
 
@@ -325,7 +421,7 @@ The nn library abstracts the calculation of errors and backpropogation of the er
    <entry>
      <title>Torch-1 Fundamentals</title>
      <link href="http://parthchadha.github.io/posts/2015/12/24/torch_1.html"/>
-     <updated>2015-12-24T00:00:00+05:30</updated>
+     <updated>2015-12-24T00:00:00+08:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/24/torch_1</id>
      <content type="html">&lt;h2&gt;Abstract&lt;/h2&gt;
 
