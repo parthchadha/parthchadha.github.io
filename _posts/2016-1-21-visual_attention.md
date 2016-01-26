@@ -7,11 +7,11 @@ category: posts
 
 # Encoder-Decoder Network
 
-It is a genral framework using neural networks for mapping structred inputs to structured outputs. 
+It is a genral framework using neural networks for mapping structured inputs to structured outputs. 
 
 What do we mean by structured outputs?
 
-When we are dealing with problems such as machine translation, we need to map input(source language) to an output which has its own structure(translated language). As described in [1], this task is not only concerned in capturing semantics on source language, but also deals with forming coherent sentence in the translated language. 
+When we are dealing with problems such as machine translation, we need to map input(*source language*) to an output which has its own structure(*translated language*). As described in [1], this task is not only concerned in capturing semantics on source language, but also deals with forming coherent sentence in the translated language. 
 
 ### Encoders 
 

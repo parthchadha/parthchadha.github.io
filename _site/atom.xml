@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2016-01-26T00:53:56+08:00</updated>
+ <updated>2016-01-26T14:26:58+08:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -19,11 +19,11 @@
      <id>http://parthchadha.github.io/posts/2016/01/21/visual_attention</id>
      <content type="html">&lt;h1&gt;Encoder-Decoder Network&lt;/h1&gt;
 
-&lt;p&gt;It is a genral framework using neural networks for mapping structred inputs to structured outputs. &lt;/p&gt;
+&lt;p&gt;It is a genral framework using neural networks for mapping structured inputs to structured outputs. &lt;/p&gt;
 
 &lt;p&gt;What do we mean by structured outputs?&lt;/p&gt;
 
-&lt;p&gt;When we are dealing with problems such as machine translation, we need to map input(source language) to an output which has its own structure(translated language). As described in [1], this task is not only concerned in capturing semantics on source language, but also deals with forming coherent sentence in the translated language. &lt;/p&gt;
+&lt;p&gt;When we are dealing with problems such as machine translation, we need to map input(&lt;em&gt;source language&lt;/em&gt;) to an output which has its own structure(&lt;em&gt;translated language&lt;/em&gt;). As described in [1], this task is not only concerned in capturing semantics on source language, but also deals with forming coherent sentence in the translated language. &lt;/p&gt;
 
 &lt;h3&gt;Encoders&lt;/h3&gt;
 
