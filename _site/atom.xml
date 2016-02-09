@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2016-01-26T14:26:58+08:00</updated>
+ <updated>2016-02-09T23:51:47+08:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -13,13 +13,83 @@
  
    
    <entry>
-     <title>Multimodal learning techniques</title>
+     <title>Multimodal learning techniques - 1</title>
+     <link href="http://parthchadha.github.io/posts/2016/02/07/visual_attention_2.html"/>
+     <updated>2016-02-07T00:00:00+08:00</updated>
+     <id>http://parthchadha.github.io/posts/2016/02/07/visual_attention_2</id>
+     <content type="html">&lt;h2&gt;Multimodal distributed representations&lt;/h2&gt;
+
+&lt;h3&gt;Goal:&lt;/h3&gt;
+
+&lt;p&gt;We want to mathematically model the similarity between image and the sentences that describe the image. We can embed both image and sentences into an embedding space, where this embedding space has the property that vectors that are nearby are visually or semantically related. By the use of joint image-text embedding space, tasks such information retrieval becomes easy. Given a sentence, we can retrieve most relevant images from the dataset, and given an image, we can rank the best describing captions from the given set. &lt;/p&gt;
+
+&lt;h3&gt;Model:&lt;/h3&gt;
+
+&lt;p&gt;Paper on Visual-Semantic Embeddings [5] describes an encoder-decoder pipeline that learns a joint multimodal joint embedding space with images and text. This model encodes visual information from images and semantic information from captions into an embedding space. It uses pairwise ranking cost function to train the model. &lt;/p&gt;
+
+&lt;p&gt;For both images and captions, we first represent them in their respective lower dimensional representations. Awesome property of these representations is that similar objects or words in this lower dimensional space are closer to each other.&lt;/p&gt;
+
+&lt;p&gt;These lower dimensional representation are then passed through respective encoders to map them into $D$ dimensional embedding space.&lt;/p&gt;
+
+&lt;p&gt;For images, we use CNN to represent images in a low-dimensional space using feature vectors extracted from last convolutional or fully-connected layers.
+For captions, we use LSTM recurrent neural networks, which encode the sentences into $D$ dimensional space. &lt;/p&gt;
+
+&lt;p&gt;Input to LSTM&amp;#39;s are vector representation of sentences. Vector representation of sentences are also called word embeddings. These word embeddings can be a learnable parameter during training, else we can use pre-trained models such Word2Vec or GloVe. These pre-trained models are trained over entire Wikipedia and other huge datasets. &lt;/p&gt;
+
+&lt;p&gt;I ran a $K-means$ clustering algorithm to cluster together words on GloVe pretrained vectors. Below are some of the results of words with similar semantic meaning.&lt;/p&gt;
+&lt;div class=&quot;highlight&quot;&gt;&lt;pre&gt;&lt;code class=&quot;language-text&quot; data-lang=&quot;text&quot;&gt;[u&amp;#39;tuesday&amp;#39;, u&amp;#39;wednesday&amp;#39;, u&amp;#39;monday&amp;#39;, u&amp;#39;thursday&amp;#39;, u&amp;#39;friday&amp;#39;, u&amp;#39;sunday&amp;#39;, u&amp;#39;saturday&amp;#39;, u&amp;#39;late&amp;#39;, u&amp;#39;night&amp;#39;, u&amp;#39;morning&amp;#39;]
+
+[u&amp;#39;school&amp;#39;, u&amp;#39;university&amp;#39;, u&amp;#39;college&amp;#39;, u&amp;#39;students&amp;#39;, u&amp;#39;education&amp;#39;, u&amp;#39;schools&amp;#39;]
+
+[u&amp;#39;music&amp;#39;, u&amp;#39;album&amp;#39;, u&amp;#39;band&amp;#39;, u&amp;#39;song&amp;#39;]
+
+[u&amp;#39;game&amp;#39;, u&amp;#39;play&amp;#39;, u&amp;#39;games&amp;#39;, u&amp;#39;played&amp;#39;, u&amp;#39;players&amp;#39;, u&amp;#39;match&amp;#39;, u&amp;#39;player&amp;#39;, u&amp;#39;playing&amp;#39;]
+
+[u&amp;#39;won&amp;#39;, u&amp;#39;win&amp;#39;, u&amp;#39;victory&amp;#39;, u&amp;#39;gold&amp;#39;, u&amp;#39;winning&amp;#39;]
+&lt;/code&gt;&lt;/pre&gt;&lt;/div&gt;
+&lt;h3&gt;Sequence of operation for captions:&lt;/h3&gt;
+
+&lt;p&gt;Captions are parsed into words, GloVe vector is extracted for each of these word. These word vectors are then fed in sequentially into a RNN. The output from the last state of the RNN (&lt;em&gt;$D$ dimensional vector&lt;/em&gt;) represents the semantic sense of the sentence.&lt;/p&gt;
+
+&lt;h3&gt;Cost function:&lt;/h3&gt;
+
+&lt;p&gt;Our aim is have low cost for similar visual-semantic pairs or high cost for disimilar pairs.
+For measuring similarity we use cosine similarity function (&lt;em&gt;we have same embedding dimension for image and caption&lt;/em&gt;).&lt;/p&gt;
+
+&lt;p&gt;$$
+Cost = \sum_{x} \sum_{k} max(0,\alpha - s(x,v) + s(x,v_{k})) + \sum_{v} \sum_{k} max(0,\alpha - s(v,x) + s(v,x_{k})) 
+$$&lt;/p&gt;
+
+&lt;p&gt;Here , x corresponds to image embedding, v to caption embedding, $x_{k}$ to contrastive image emedding and $v_{k}$ to contrastive caption embedding.&lt;/p&gt;
+
+&lt;p&gt;In case of image embedding, learnable parameters are only $W_{emb}$, which map the output of CNN(&lt;em&gt;4096 dimensional vector in case of VGGnet&lt;/em&gt;) into $D$ dimensional embedding space.&lt;/p&gt;
+
+&lt;p&gt;In case of captions, LSTM weights are the only learnable paramters.&lt;/p&gt;
+
+&lt;h3&gt;References&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Describing Multimedia Content using Attention-based Encoder--Decoder Networks 
+Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Recurrent Neural Network Regularization&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Show, Attend and Tell: Neural Image Caption Generation with Visual Attention&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Unifying Visual-Semantic Embeddings with Multimodal Neural Language Models
+Link: &lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+   </entry>
+   
+ 
+   
+   <entry>
+     <title>Multimodal learning techniques - 2</title>
      <link href="http://parthchadha.github.io/posts/2016/01/21/visual_attention.html"/>
      <updated>2016-01-21T00:00:00+08:00</updated>
      <id>http://parthchadha.github.io/posts/2016/01/21/visual_attention</id>
-     <content type="html">&lt;h1&gt;Encoder-Decoder Network&lt;/h1&gt;
+     <content type="html">&lt;h2&gt;Encoder-Decoder Network&lt;/h2&gt;
 
-&lt;p&gt;It is a genral framework using neural networks for mapping structured inputs to structured outputs. &lt;/p&gt;
+&lt;p&gt;It is a general framework using neural networks for mapping structured inputs to structured outputs. &lt;/p&gt;
 
 &lt;p&gt;What do we mean by structured outputs?&lt;/p&gt;
 
@@ -57,7 +127,7 @@ $$&lt;/p&gt;
 
 &lt;p&gt;To tackle above discussed issues, [1] introduces a concept of attention mechanism between encoder and decoder.&lt;/p&gt;
 
-&lt;p&gt;To incorporate structured representation of input, we want encoder to return a set of vectors describing a spatial or temporal component of input. 
+&lt;p&gt;To incorporate structured representation of input, we want encoder to return a set of vectors describing the spatial or temporal component of input. 
 We refer $c$ to as context set, which is composed of fixed size vectors. The number of vectors in each example may vary. 
 $$
 c = {c_{1}, c_{2}, \dots, c_{M}}
@@ -65,9 +135,9 @@ $$&lt;/p&gt;
 
 &lt;p&gt;The attention model controls what information is seen by the decoder and hence the pipeline is composed of encoder, attention model and then decoder.&lt;/p&gt;
 
-&lt;p&gt;The attention model takes input from hidden state of decoder at previous time step $z_{t-1}$ and score the context vector $c_{i}$. This signfies which vector $c_{i}$ is most relevant to focus on for next timestep.&lt;/p&gt;
+&lt;p&gt;The attention model takes input from hidden state of decoder at previous time step $z_{t-1}$ and score the context vector $c_{i}$. This signifies which vector $c_{i}$ is most relevant to focus on for next timestep.&lt;/p&gt;
 
-&lt;p&gt;$e_{i}^{t}$ signifies the scores and $\alpha_{i}^{t}$ signifies the attentian weights given to each element of context vector $c$. &lt;/p&gt;
+&lt;p&gt;$e_{i}^{t}$ signifies the scores and $\alpha_{i}^{t}$ signifies the attention weights given to each element of context vector $c$. &lt;/p&gt;
 
 &lt;p&gt;Scores $e_{i}^{t}$ are calculated as: 
 $$e_{i}^{t} = f_{ATT}(z_{t-1}, c_{i}, {\alpha_{j}^{t-1} })$$&lt;/p&gt;
@@ -81,7 +151,7 @@ $$&lt;/p&gt;
 
 &lt;p&gt;With the new context vector $c^{t}$, we calculate the new state of decoder, which is RNN in image captioning case. $h_{t} = \phi_{\theta}(h_{t-1},x_{t},c_{t})$.&lt;/p&gt;
 
-&lt;p&gt;This design of pipeline solves the problem of limited information being encoded by the encoder. Now based on decoder&amp;#39;s output at each time step, we caclculate the weightage given to spatial or temporal part of input. Hence, each vector output by encoder now describes particular region of input. Attention mechanism learns to chose which information needs to focussed at particular time step.&lt;/p&gt;
+&lt;p&gt;This design of pipeline solves the problem of limited information being encoded by the encoder. Now based on decoder&amp;#39;s output at each time step, we calculate the weightage given to spatial or temporal part of input. Hence, each vector output by encoder now describes a particular region of the input. Attention mechanism learns to chose which information needs to focussed at a particular time step.&lt;/p&gt;
 
 &lt;p&gt;&lt;img src=&quot;https://heuritech.files.wordpress.com/2016/01/caption_attention1.png?w=470&quot; alt=&quot;Attention based model&quot;&gt;&lt;/p&gt;
 
@@ -102,6 +172,7 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Recurrent Neural Network Regularization&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Show, Attend and Tell: Neural Image Caption Generation with Visual Attention&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Skip-Thought Vectors&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 </content>
    </entry>

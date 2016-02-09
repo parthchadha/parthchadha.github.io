@@ -1,13 +1,13 @@
 ---
 layout: post
-title: Multimodal learning techniques
+title: Multimodal learning techniques - 2
 use_math: true
 category: posts
 ---
 
-# Encoder-Decoder Network
+## Encoder-Decoder Network
 
-It is a genral framework using neural networks for mapping structured inputs to structured outputs. 
+It is a general framework using neural networks for mapping structured inputs to structured outputs. 
 
 What do we mean by structured outputs?
 
@@ -47,7 +47,7 @@ Not all of the images contain the same amount of information, and hence to descr
 
 To tackle above discussed issues, [1] introduces a concept of attention mechanism between encoder and decoder.
 
-To incorporate structured representation of input, we want encoder to return a set of vectors describing a spatial or temporal component of input. 
+To incorporate structured representation of input, we want encoder to return a set of vectors describing the spatial or temporal component of input. 
 We refer $c$ to as context set, which is composed of fixed size vectors. The number of vectors in each example may vary. 
 $$
 c = {c\_{1}, c\_{2}, \dots, c\_{M}}
@@ -55,9 +55,9 @@ $$
 
 The attention model controls what information is seen by the decoder and hence the pipeline is composed of encoder, attention model and then decoder.
 
-The attention model takes input from hidden state of decoder at previous time step $z\_{t-1}$ and score the context vector $c\_{i}$. This signfies which vector $c\_{i}$ is most relevant to focus on for next timestep.
+The attention model takes input from hidden state of decoder at previous time step $z\_{t-1}$ and score the context vector $c\_{i}$. This signifies which vector $c\_{i}$ is most relevant to focus on for next timestep.
 
-$e\_{i}^{t}$ signifies the scores and $\alpha\_{i}^{t}$ signifies the attentian weights given to each element of context vector $c$. 
+$e\_{i}^{t}$ signifies the scores and $\alpha\_{i}^{t}$ signifies the attention weights given to each element of context vector $c$. 
 
 Scores $e\_{i}^{t}$ are calculated as: 
 $$e\_{i}^{t} = f\_{ATT}(z\_{t-1}, c\_{i}, {\alpha\_{j}^{t-1} })$$
@@ -74,7 +74,7 @@ $$
 With the new context vector $c^{t}$, we calculate the new state of decoder, which is RNN in image captioning case. $h\_{t} = \phi\_{\theta}(h\_{t-1},x\_{t},c\_{t})$.
 
 
-This design of pipeline solves the problem of limited information being encoded by the encoder. Now based on decoder's output at each time step, we caclculate the weightage given to spatial or temporal part of input. Hence, each vector output by encoder now describes particular region of input. Attention mechanism learns to chose which information needs to focussed at particular time step.
+This design of pipeline solves the problem of limited information being encoded by the encoder. Now based on decoder's output at each time step, we calculate the weightage given to spatial or temporal part of input. Hence, each vector output by encoder now describes a particular region of the input. Attention mechanism learns to chose which information needs to focussed at a particular time step.
 
 
 ![Attention based model](https://heuritech.files.wordpress.com/2016/01/caption_attention1.png?w=470)
@@ -100,3 +100,5 @@ $$
 3. Show, Attend and Tell: Neural Image Caption Generation with Visual Attention
 
 4. http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/
+
+5. Skip-Thought Vectors
