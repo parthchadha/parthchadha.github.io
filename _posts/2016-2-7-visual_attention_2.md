@@ -69,7 +69,6 @@ In case of captions, LSTM weights are the only learnable paramters.
 
 3. Show, Attend and Tell: Neural Image Caption Generation with Visual Attention
 
-4. http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/
-
+4. [Heuritech blog](http://blog.heuritech.com/2015/12/01/learning-to-link-images-with-their-descriptions/)
 5. Unifying Visual-Semantic Embeddings with Multimodal Neural Language Models
     Link: 
