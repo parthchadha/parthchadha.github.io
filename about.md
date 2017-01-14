@@ -10,6 +10,8 @@ Before joining CMU for graduate studies, I had been working on building [Afforda
 
 I presented my work on using novel discrete memristor to develop applications such programmable analog circuits at MemTDAC workshop, HiPEAC Conference'14. [Paper Link](paper1.pdf)
 
+Machine learning 10-701 Project. [Project Report](ML701_final_report.pdf)
+
 
 ## Why
 I would love to post topics that might help someone someday!

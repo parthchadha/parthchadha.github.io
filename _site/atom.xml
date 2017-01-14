@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2016-02-10T00:45:25+08:00</updated>
+ <updated>2017-01-13T20:03:54-05:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -15,7 +15,7 @@
    <entry>
      <title>Multimodal learning techniques - 1</title>
      <link href="http://parthchadha.github.io/posts/2016/02/07/visual_attention_2.html"/>
-     <updated>2016-02-07T00:00:00+08:00</updated>
+     <updated>2016-02-07T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2016/02/07/visual_attention_2</id>
      <content type="html">&lt;h2&gt;Multimodal distributed representations&lt;/h2&gt;
 
@@ -85,7 +85,7 @@ Link: &lt;/p&gt;&lt;/li&gt;
    <entry>
      <title>Multimodal learning techniques - 2</title>
      <link href="http://parthchadha.github.io/posts/2016/01/21/visual_attention.html"/>
-     <updated>2016-01-21T00:00:00+08:00</updated>
+     <updated>2016-01-21T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2016/01/21/visual_attention</id>
      <content type="html">&lt;h2&gt;Encoder-Decoder Network&lt;/h2&gt;
 
@@ -182,7 +182,7 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;&lt;/li&gt;
    <entry>
      <title>Torch-4 Recurrent Neural Networks, LSTM</title>
      <link href="http://parthchadha.github.io/posts/2016/01/04/torch_4.html"/>
-     <updated>2016-01-04T00:00:00+08:00</updated>
+     <updated>2016-01-04T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2016/01/04/torch_4</id>
      <content type="html">&lt;h2&gt;Why RNN/LSTM&lt;/h2&gt;
 
@@ -282,7 +282,7 @@ Please note this code is referenced from this &lt;a href=&quot;https://apaszke.g
    <entry>
      <title>Torch-3 Multi-layer perceptron</title>
      <link href="http://parthchadha.github.io/posts/2015/12/26/torch_3.html"/>
-     <updated>2015-12-26T00:00:00+08:00</updated>
+     <updated>2015-12-26T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/26/torch_3</id>
      <content type="html">&lt;p&gt;Torch provides collection of blocks or abstract layers for building deep neural networks. 
 The nn library abstracts the calculation of errors and backpropogation of the error signals.&lt;/p&gt;
@@ -433,7 +433,7 @@ The nn library abstracts the calculation of errors and backpropogation of the er
    <entry>
      <title>Torch-2 Data manipulation</title>
      <link href="http://parthchadha.github.io/posts/2015/12/25/torch_2.html"/>
-     <updated>2015-12-25T00:00:00+08:00</updated>
+     <updated>2015-12-25T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/25/torch_2</id>
      <content type="html">&lt;h2&gt;Basic data manipulation in Torch&lt;/h2&gt;
 
@@ -492,7 +492,7 @@ The nn library abstracts the calculation of errors and backpropogation of the er
    <entry>
      <title>Torch-1 Fundamentals</title>
      <link href="http://parthchadha.github.io/posts/2015/12/24/torch_1.html"/>
-     <updated>2015-12-24T00:00:00+08:00</updated>
+     <updated>2015-12-24T00:00:00-05:00</updated>
      <id>http://parthchadha.github.io/posts/2015/12/24/torch_1</id>
      <content type="html">&lt;h2&gt;Abstract&lt;/h2&gt;
 
