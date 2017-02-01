@@ -15,7 +15,7 @@ My course list at CMU
 6. How to Write Fast Code
 
 
-I worked under [Prof. Gary Overett](http://gary.overett.org) for my research work on Recurrent Attention Models. [Experiment Link](smnist.gif).
+I worked under [Prof. Gary Overett](http://gary.overett.org) for my research work on Recurrent Attention Models. [Thesis Link](thesis.pdf) [Experiment Link](smnist.gif).
 
 Before joining CMU for graduate studies, I had been working on building [Affordable Refreshable braille display](http://assistech.iitd.ernet.in/index.php). I completed my undergraduate studies from [Delhi College of Engineering](http://dtu.ac.in), where my undergraduate thesis focussed on Biological inspired circuits and systems.
 
