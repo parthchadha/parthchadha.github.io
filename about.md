@@ -21,6 +21,7 @@ Before joining CMU for graduate studies, I had been working on building [Afforda
 
 I presented my work on using novel discrete memristor to develop applications such programmable analog circuits at MemTDAC workshop, HiPEAC Conference'14. [Paper Link](paper1.pdf)
 
+[Resume](parth_chadha_cv.pdf)
 
 ## Why
 I would love to post topics that might help someone someday!
