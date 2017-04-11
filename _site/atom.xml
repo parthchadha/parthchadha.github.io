@@ -4,12 +4,129 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2017-04-11T03:59:27-04:00</updated>
+ <updated>2017-04-11T12:47:35-04:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
  </author>
  
+ 
+   
+   <entry>
+     <title>LSTM'S on Domain Specific Languages - LSTM-DSL</title>
+     <link href="http://parthchadha.github.io/posts/2017/10/04/Parallel_418.html"/>
+     <updated>2017-10-04T00:00:00-04:00</updated>
+     <id>http://parthchadha.github.io/posts/2017/10/04/Parallel_418</id>
+     <content type="html">&lt;h2&gt;Team&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Tejus S, AndrewID : tsiddaga&lt;/li&gt;
+&lt;li&gt;Parth Chadha, AndrewID: pchadha&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;In the LSTM-DSL project, we aim to produce a high-performance implementation of Long-Short Term Memory Network using Domain-Specific Languages such as Halide and/or using custom DSL. This would provide portability across different platforms and architectures.&lt;/p&gt;
+
+&lt;h2&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;LSTM&amp;#39;s are a variant of RNN and were designed to tackle the vanishing gradients problem with RNN. 
+RNN&amp;#39;s when back-propogated over a large number of time-steps, face a problem of diminished value of gradients. With the presence of memory cell in LSTM&amp;#39;s, we can have continuous gradient flow which helps in learning long-term dependencies.
+Equations describing LSTM network:&lt;/p&gt;
+
+&lt;p&gt;$$ i_{t} = sigm(\theta_{xi} X_{t} + \theta_{hi} h_{t-1} + b_{i}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ f_{t} = sigm(\theta_{xf} X_{t} + \theta_{hf} h_{t-1} + b_{f}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ o_{t} = sigm(\theta_{xo} X_{t} + \theta_{ho} h_{t-1} + b_{o})$$&lt;/p&gt;
+
+&lt;p&gt;$$ g_{t} = sigm(\theta_{xg} X_{t} + \theta_{hg} h_{t-1} + b_{g}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ c_{t} = f_{t} \cdot c_{t-1} + i_{t} \cdot g_{t} $$&lt;/p&gt;
+
+&lt;p&gt;$$ h_{t} = o_{t} \cdot tanh(c_{t-1}) $$&lt;/p&gt;
+
+&lt;p&gt;The cost involved in evaluating these networks is dominated by Matrix Matrix Multiplication operation, GEMM operation in BLAS libraries. A naive implementation would perform eight matrix-matrix multiplications, 4 with inputs and 4 with previous state vectors. We plan to explore various optimizations around the naive implementation such as Combining Operations, Fusing Point Wise operations etc.&lt;/p&gt;
+
+&lt;p&gt;We plan to initially get familiar with Halide and understand more in depth about Domain Specific Languages and understand the limitations of Halide in tasks not meant for Image Processing such as LSTM&amp;#39;s. Based on our learning and as mentioned in suggested projects, we plan to implement a custom DSL to incorporate variants of RNN&amp;#39;s in the framework. Using the DSL, we aim to use basic blocks from cuDNN or cuBLAS for effecient operations on matrices. &lt;/p&gt;
+
+&lt;h2&gt;The Challenge&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Since this is our introduction to Domain Specifc Languages, we assume the learning curve would be steep and hence we plan to initially spend some time to understand the code structure in Halide.&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Training of LSTM&amp;#39;s using Backpropogation Through Time is a tricky process and might take time to get the gradient calculations right. We can initially try to optimize just for inference using pre-trained network and if the time permits, optimize for backpropogation.&lt;/p&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Goals And Deliverables&lt;/h2&gt;
+
+&lt;h3&gt;PLAN TO ACHIEVE&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Implementing a custom DSL for LSTM&amp;#39;s &lt;/li&gt;
+&lt;li&gt;Evaluating the network using library interface from cuBLAS&lt;/li&gt;
+&lt;li&gt;The baseline will consist of running a seperate kernel for each matrix-matrix operation and not performing any optimization such as combination of operations, fusion of operations etc. We plan to freeze the network architecture and hyperparameters after getting a baseline working, and having comparison of optimized version with this network/hyperparameters. We will compare performance using TFLOPS achieved.&lt;/li&gt;
+&lt;li&gt;Optimize only for inference and using a pre-trained network&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;HOPE TO ACHIEVE&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Optimization of back-propogation through time and training deeper networks.&lt;/li&gt;
+&lt;li&gt;Performing hyper-parameter search and optimization to extract maximum parallelism from the underlying hardware&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Platform Choice&lt;/h2&gt;
+
+&lt;p&gt;The GTX 1080 GPU&amp;#39;s on GHC.&lt;/p&gt;
+
+&lt;h2&gt;Schedule&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Week 1 - April 10th - 16th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Go through Halide source code and learn more about DSL&amp;#39;s and understand the limitations of Halide for the use of LSTM&amp;#39;s.&lt;/li&gt;
+&lt;li&gt;Have a in-depth understanding of LSTM&amp;#39;s implementation &lt;/li&gt;
+&lt;li&gt;Meet with Ravi for discussion regarding the project plan&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 2 - April 17th - 23rd&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Have a naive working code for LSTM inference&lt;/li&gt;
+&lt;li&gt;Explore DSL&amp;#39;s implementation and start implementing a mini-DSL using Python&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 3 - April 24th - 30th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Complete DSL implementation&lt;/li&gt;
+&lt;li&gt;Explore cuBLAS and cuDNN library and possibly implement a naive basic block code generation&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 4 - May 1st - 7th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Test and benchmark the naive implementation&lt;/li&gt;
+&lt;li&gt;Understand the existing bottlenecks in naive implementation&lt;/li&gt;
+&lt;li&gt;Perform optimizations on the current implementation for speedup!&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 5 - May 8th - 12th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Perform more optimizations and achieve more speedup!&lt;/li&gt;
+&lt;li&gt;Documentation&lt;/li&gt;
+&lt;li&gt;If time permits, optimizing for back-propogation and train a network.&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Optimizing Performance of Recurrent Neural Networks on GPUs
+Link : https://arxiv.org/abs/1604.01946&lt;/li&gt;
+&lt;li&gt;https://devblogs.nvidia.com/parallelforall/  optimizing-recurrent-neural-networks-cudnn-5/&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+   </entry>
+   
  
    
    <entry>
