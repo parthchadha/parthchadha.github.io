@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2017-04-10T23:39:00-04:00</updated>
+ <updated>2017-04-10T23:42:30-04:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -17,7 +17,14 @@
      <link href="http://parthchadha.github.io/posts/2017/10/04/Parallel_418.html"/>
      <updated>2017-10-04T00:00:00-04:00</updated>
      <id>http://parthchadha.github.io/posts/2017/10/04/Parallel_418</id>
-     <content type="html">&lt;h2&gt;Summary&lt;/h2&gt;
+     <content type="html">&lt;h2&gt;Team&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Tejus S, AndrewID : tsiddaga&lt;/li&gt;
+&lt;li&gt;Parth Chadha, AndrewID: pchadha&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Summary&lt;/h2&gt;
 
 &lt;p&gt;In the LSTM-DSL project, we aim to produce a high-performance implementation of Long-Short Term Memory Network using Domain-Specific Languages such as Halide and/or using custom DSL. This would provide portability across different platforms and architectures.&lt;/p&gt;
 
