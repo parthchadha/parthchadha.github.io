@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2017-04-11T12:48:29-04:00</updated>
+ <updated>2017-04-25T22:59:33-04:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -17,7 +17,9 @@
      <link href="http://parthchadha.github.io/posts/2017/10/04/Parallel_418.html"/>
      <updated>2017-10-04T00:00:00-04:00</updated>
      <id>http://parthchadha.github.io/posts/2017/10/04/Parallel_418</id>
-     <content type="html">&lt;h2&gt;Team&lt;/h2&gt;
+     <content type="html">&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/10/04/Parallel_418.html&quot;&gt;Mid term checkpoint&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Team&lt;/h2&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Tejus S, AndrewID : tsiddaga&lt;/li&gt;
@@ -130,11 +132,169 @@ Link : https://arxiv.org/abs/1604.01946&lt;/li&gt;
  
    
    <entry>
+     <title>Optimizing LSTM's on GPU with scheduling - Optim-LSTM</title>
+     <link href="http://parthchadha.github.io/posts/2017/04/10/mid_report_418.html"/>
+     <updated>2017-04-10T00:00:00-04:00</updated>
+     <id>http://parthchadha.github.io/posts/2017/04/10/mid_report_418</id>
+     <content type="html">&lt;h2&gt;Team&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Tejus S, AndrewID : tsiddaga&lt;/li&gt;
+&lt;li&gt;Parth Chadha, AndrewID: pchadha&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Summary&lt;/h2&gt;
+
+&lt;p&gt;In the Optim-LSTM project, we aim to produce a high-performance implementation of Long-Short Term Memory Network using Domain-Specific Languages such as Halide and/or using custom DSL. This would provide portability across different platforms and architectures.&lt;/p&gt;
+
+&lt;h2&gt;Background&lt;/h2&gt;
+
+&lt;p&gt;LSTM&amp;#39;s are a variant of RNN and were designed to tackle the vanishing gradients problem with RNN. 
+RNN&amp;#39;s when back-propogated over a large number of time-steps, face a problem of diminished value of gradients. With the presence of memory cell in LSTM&amp;#39;s, we can have continuous gradient flow which helps in learning long-term dependencies.
+Equations describing LSTM network:&lt;/p&gt;
+
+&lt;p&gt;$$ i_{t} = sigm(\theta_{xi} X_{t} + \theta_{hi} h_{t-1} + b_{i}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ f_{t} = sigm(\theta_{xf} X_{t} + \theta_{hf} h_{t-1} + b_{f}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ o_{t} = sigm(\theta_{xo} X_{t} + \theta_{ho} h_{t-1} + b_{o})$$&lt;/p&gt;
+
+&lt;p&gt;$$ g_{t} = sigm(\theta_{xg} X_{t} + \theta_{hg} h_{t-1} + b_{g}) $$&lt;/p&gt;
+
+&lt;p&gt;$$ c_{t} = f_{t} \cdot c_{t-1} + i_{t} \cdot g_{t} $$&lt;/p&gt;
+
+&lt;p&gt;$$ h_{t} = o_{t} \cdot tanh(c_{t-1}) $$&lt;/p&gt;
+
+&lt;p&gt;The cost involved in evaluating these networks is dominated by Matrix Matrix Multiplication operation, GEMM operation in BLAS libraries. A naive implementation would perform eight matrix-matrix multiplications, 4 with inputs and 4 with previous state vectors. We plan to explore various optimizations around the naive implementation such as Combining Operations, Fusing Point Wise operations etc.&lt;/p&gt;
+
+&lt;p&gt;We plan to initially get familiar with Halide and understand more in depth about Domain Specific Languages and understand the limitations of Halide in tasks not meant for Image Processing such as LSTM&amp;#39;s. Based on our learning and as mentioned in suggested projects, we plan to implement a custom DSL to incorporate variants of RNN&amp;#39;s in the framework. Using the DSL, we aim to use basic blocks from cuDNN or cuBLAS for effecient operations on matrices. &lt;/p&gt;
+
+&lt;h2&gt;Mid-term checkpoint&lt;/h2&gt;
+
+&lt;p&gt;We explored the implementation of LSTM using Halide and found that the scheduling policies used in Halide is not optimal/suitable for RNN type neural networks. Instead of starting with DSL implementation, we started working on CUDA implementation of LSTM networks as we think this optimization is key for the goal of term project. Once we have an optimized LSTM kernels, we can link them up with a general purpose framework. We have a generic framework setup in C++ which we can use to call our optimized kernels.&lt;/p&gt;
+
+&lt;h3&gt;Current implementation:&lt;/h3&gt;
+
+&lt;p&gt;We used the equations as described in Background section to implement the LSTM structure on CUDA. The current baseline version is a naive implementation using cuBLAS library for General purpose matrix multiplication &lt;code&gt;(GEMM)&lt;/code&gt;. Although GEMM is highly optimized for GPUs, it does not utilize all the parallelism that can be extracted as the matrix sizes are inherently small.
+The current implmentation uses 8 GEMM operations, 4 for multiplying input $x_{t}$ with $\theta_{xi},\theta_{xf},\theta_{xo},\theta_{xg}$ and 4 for multiplying $h_{t-1}$ with $\theta_{hi},\theta_{hf},\theta_{ho},\theta_{hg}$.&lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;https://devblogs.nvidia.com/parallelforall/wp-content/uploads/2016/04/image06.png&quot; alt=&quot;LSTM layer-wise structure&quot;&gt;
+&lt;em&gt;Figure 1: LSTM layer-wise structure&lt;/em&gt;&lt;/p&gt;
+
+&lt;p&gt;In our current scheduling policy, we first cover the layer &lt;em&gt;l&lt;/em&gt;, across the sequence length and then move on to the layer &lt;em&gt;l+1&lt;/em&gt;. This implementation does not utilize the inherent parallelism provided by the LSTM structure, but it serves as a valid working baseline.&lt;/p&gt;
+
+&lt;p&gt;Below are the key optimizations we are trying to implement.&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Currently our baseline code uses cuBLAS library which does not utilize the complete resource of the GPU and also does not exploit inherent parallelism in LSTM networks. To avoid this problem, we plan to combine multiple matrix multiplications &lt;code&gt;(Instead of 4 different matrix multiplications)&lt;/code&gt;. We aim to combine 4 matrix multiplication into one GEMM kernel invocation. This should help in exploiting the available GPU resources. This is due to the usage of all the SM&amp;#39;s on GPU.&lt;/li&gt;
+&lt;li&gt;As shown in Figure 1, once the computation of first time sequence of first layer &lt;code&gt;(L0,0)&lt;/code&gt; is completed, in our naive implementation we move on to second time step &lt;code&gt;(L0,1)&lt;/code&gt; in the same layer. However, since we have the computed output from &lt;code&gt;(L0,0)&lt;/code&gt;, we can also parallely work on &lt;code&gt;(L1,0)&lt;/code&gt; cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS.&lt;/li&gt;
+&lt;li&gt;Utilizing the FMA units available on the GPU to reduce the number of times a matrix is accessed from memory. For example, we need to perform two matrix multiplcation and one addition to compute $i_{t}, f_{t}, o_{t}, g_{t}$. Instead of storing the intermediate results in a buffer, we plan to compute this in the form of $Y = AX + B$ such that the FMA units are utilized. &lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;Current Runtime&lt;/h3&gt;
+
+&lt;p&gt;The runtime for our naive implementation of a 4 layer LSTM with below configurations is 182.5ms. &lt;/p&gt;
+
+&lt;p&gt;LSTM Config:&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Number of Layers - 4&lt;/li&gt;
+&lt;li&gt;Sequence Length - 100&lt;/li&gt;
+&lt;li&gt;Hidden Unit Size - 512&lt;/li&gt;
+&lt;li&gt;Batch Size - 64&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;p&gt;With our proposed optimizations, we expect the runtime to reduce significantly. &lt;/p&gt;
+
+&lt;h2&gt;The Challenge - &lt;em&gt;Revised&lt;/em&gt;&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Since this is our introduction to Domain Specifc Languages, we assume the learning curve would be steep and hence we plan to initially spend some time to understand the code structure in Halide.&lt;/li&gt;
+&lt;li&gt;Training of LSTM&amp;#39;s using Backpropogation Through Time is a tricky process and might take time to get the gradient calculations right. We can initially try to optimize just for inference using pre-trained network and if the time permits, optimize for backpropogation.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Goals And Deliverables - &lt;em&gt;Revised&lt;/em&gt;&lt;/h2&gt;
+
+&lt;h3&gt;PLAN TO ACHIEVE&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Implementing a custom DSL for LSTM&amp;#39;s &lt;/li&gt;
+&lt;li&gt;Evaluating the network using library interface from cuBLAS&lt;/li&gt;
+&lt;li&gt;The baseline will consist of running a seperate kernel for each matrix-matrix operation and not performing any optimization such as combination of operations, fusion of operations etc. We plan to freeze the network architecture and hyperparameters after getting a baseline working, and having comparison of optimized version with this network/hyperparameters. We will compare performance using TFLOPS achieved.&lt;/li&gt;
+&lt;li&gt;Optimize only for inference and using a pre-trained network&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h3&gt;HOPE TO ACHIEVE&lt;/h3&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Optimization of back-propogation through time and training deeper networks.&lt;/li&gt;
+&lt;li&gt;Performing hyper-parameter search and optimization to extract maximum parallelism from the underlying hardware&lt;/li&gt;
+&lt;li&gt;Since we are concentrating on the scheduling and optimizing LSTMs for inference, integrating this with Halide/Custom-DSL might be challenging. However, we are providing a generic C++ interface for LSTMs.&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;Platform Choice&lt;/h2&gt;
+
+&lt;p&gt;The GTX 1080 GPU&amp;#39;s on GHC.&lt;/p&gt;
+
+&lt;h2&gt;Schedule - &lt;em&gt;Revised&lt;/em&gt;&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;&lt;p&gt;Week 1 - April 10th - 16th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Go through Halide source code and learn more about DSL&amp;#39;s and understand the limitations of Halide for the use of LSTM&amp;#39;s. &lt;strong&gt;DONE&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Have a in-depth understanding of LSTM&amp;#39;s implementation &lt;strong&gt;DONE&lt;/strong&gt; &lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 2 - April 17th - 23rd&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Have a naive working code for LSTM inference &lt;strong&gt;DONE&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Explore DSL&amp;#39;s implementation and start implementing a mini-DSL using Python &lt;strong&gt;Pushed to a later stage&lt;/strong&gt;&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 3 - April 24th - 30th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Complete DSL implementation &lt;strong&gt;Custom C++ interface&lt;/strong&gt;&lt;/li&gt;
+&lt;li&gt;Explore cuBLAS and cuDNN library and possibly implement a naive basic block code generation&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 4 - May 1st - 7th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Test and benchmark the naive implementation&lt;/li&gt;
+&lt;li&gt;Understand the existing bottlenecks in naive implementation&lt;/li&gt;
+&lt;li&gt;Perform optimizations on the current implementation for speedup!&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Week 5 - May 8th - 12th&lt;/p&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Perform more optimizations and achieve more speedup!&lt;/li&gt;
+&lt;li&gt;Documentation&lt;/li&gt;
+&lt;li&gt;If time permits, optimizing for back-propogation and train a network.&lt;/li&gt;
+&lt;/ol&gt;&lt;/li&gt;
+&lt;/ol&gt;
+
+&lt;h2&gt;References&lt;/h2&gt;
+
+&lt;ol&gt;
+&lt;li&gt;Optimizing Performance of Recurrent Neural Networks on GPUs
+Link : https://arxiv.org/abs/1604.01946&lt;/li&gt;
+&lt;li&gt;https://devblogs.nvidia.com/parallelforall/  optimizing-recurrent-neural-networks-cudnn-5/&lt;/li&gt;
+&lt;li&gt;http://svail.github.io/diff_graphs/&lt;/li&gt;
+&lt;li&gt;http://svail.github.io/rnn_perf/&lt;/li&gt;
+&lt;/ol&gt;
+</content>
+   </entry>
+   
+ 
+   
+   <entry>
      <title>LSTM'S on Domain Specific Languages - LSTM-DSL</title>
      <link href="http://parthchadha.github.io/posts/2017/04/10/Parallel_418.html"/>
      <updated>2017-04-10T00:00:00-04:00</updated>
      <id>http://parthchadha.github.io/posts/2017/04/10/Parallel_418</id>
-     <content type="html">&lt;h2&gt;Team&lt;/h2&gt;
+     <content type="html">&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/04/10/mid_report_418.html&quot;&gt;Mid term checkpoint&lt;/a&gt;&lt;/p&gt;
+
+&lt;h2&gt;Team&lt;/h2&gt;
 
 &lt;ol&gt;
 &lt;li&gt;Tejus S, AndrewID : tsiddaga&lt;/li&gt;
