@@ -35,7 +35,7 @@ We plan to initially get familiar with Halide and understand more in depth about
 ## Mid-term checkpoint
 We explored the implementation of LSTM using Halide and found that the scheduling policies used in Halide is not optimal/suitable for RNN type neural networks. Instead of starting with DSL implementation, we started working on CUDA implementation of LSTM networks as we think this optimization is key for the goal of term project. Once we have an optimized LSTM kernels, we can link them up with a general purpose framework. We have a generic framework setup in C++ which we can use to call our optimized kernels.
 
-###Post Mid-term implementation:
+## Post Mid-term implementation:
 We used the equations as described in Background section to implement the LSTM structure on CUDA. The current baseline version is a naive implementation using cuBLAS library for General purpose matrix multiplication `(GEMM)`. Although GEMM is highly optimized for GPUs, it does not utilize all the parallelism that can be extracted as the matrix sizes are inherently small.
 The current implmentation uses 8 GEMM operations, 4 for multiplying input $x\_{t}$ with $\theta\_{xi},\theta\_{xf},\theta\_{xo},\theta\_{xg}$ and 4 for multiplying $h\_{t-1}$ with $\theta\_{hi},\theta\_{hf},\theta\_{ho},\theta\_{hg}$.
 

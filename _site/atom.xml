@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2017-05-13T00:44:59-04:00</updated>
+ <updated>2017-05-13T00:46:00-04:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -175,7 +175,7 @@ Equations describing LSTM network:&lt;/p&gt;
 
 &lt;p&gt;We explored the implementation of LSTM using Halide and found that the scheduling policies used in Halide is not optimal/suitable for RNN type neural networks. Instead of starting with DSL implementation, we started working on CUDA implementation of LSTM networks as we think this optimization is key for the goal of term project. Once we have an optimized LSTM kernels, we can link them up with a general purpose framework. We have a generic framework setup in C++ which we can use to call our optimized kernels.&lt;/p&gt;
 
-&lt;h3&gt;Post Mid-term implementation:&lt;/h3&gt;
+&lt;h2&gt;Post Mid-term implementation:&lt;/h2&gt;
 
 &lt;p&gt;We used the equations as described in Background section to implement the LSTM structure on CUDA. The current baseline version is a naive implementation using cuBLAS library for General purpose matrix multiplication &lt;code&gt;(GEMM)&lt;/code&gt;. Although GEMM is highly optimized for GPUs, it does not utilize all the parallelism that can be extracted as the matrix sizes are inherently small.
 The current implmentation uses 8 GEMM operations, 4 for multiplying input $x_{t}$ with $\theta_{xi},\theta_{xf},\theta_{xo},\theta_{xg}$ and 4 for multiplying $h_{t-1}$ with $\theta_{hi},\theta_{hf},\theta_{ho},\theta_{hg}$.&lt;/p&gt;
