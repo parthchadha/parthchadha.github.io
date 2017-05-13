@@ -50,7 +50,7 @@ Below are the key optimizations we are trying to implement.
 2. As shown in Figure 1, once the computation of first time sequence of first layer `(L0,0)` is completed, in our naive implementation we move on to second time step `(L0,1)` in the same layer. However, since we have the computed output from `(L0,0)`, we can also parallely work on `(L1,0)` cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS.
 3. Utilizing the FMA units available on the GPU to reduce the number of times a matrix is accessed from memory. For example, we need to perform two matrix multiplcation and one addition to compute $i\_{t}, f\_{t}, o\_{t}, g\_{t}$. Instead of storing the intermediate results in a buffer, we plan to compute this in the form of $Y = AX + B$ such that the FMA units are utilized. 
 
-### Current Runtime
+## Current Runtime
 The runtime for our naive implementation of a 4 layer LSTM with below configurations is 182.5ms. 
 
 LSTM Config:
@@ -94,7 +94,7 @@ The speedups mentioned in the previous section is for each individual optimizati
 Figure 3 and 4 shows the performance of various optimizations with respect to speedup and runtimes. Combining optimizations 1 and 2, we achieve a speedup of 3.74x. In this case, GEMM operations are combined to form a larger matrix and we also use Stream feature to perform independent computations in parallel. 
 By adding the Fuse Point-Wise operations optimization we were able to achieve a further increase in speedup to 6.21x. As explained in the previous section,  optimization 4 did not result in any speedup. However, with all the optimizations combined, the speedup increases to 6.55x. Matrix transpose helps in achieving good cache locality, hence the improvement in performance. With our final scheduling policy, we achieve a total speedup up of 7.98x.
 
-#GPU Peak Performance Analysis
+# GPU Peak Performance Analysis
 
 We used nvprof to profile our baseline code to evaluate the performance across various batchsizes. We calcuated the total TFLOPS the program was able to achieve by counting the number of Single Precision Floation Point operations that were performed during of program execution. We observed that with a batchsize of 224, we were able to achieve 2.16TFLOPs. This was the peak TFLOPS with our baseline code across different batch sizes. The peak TFLOPS for Nvidia GTX1080 GPU is 8.19TFLOPS and our benchmark code is significantly less. 
 
@@ -105,7 +105,7 @@ We performed a similar analysis with our fully optimized code. With an initial b
 *Figure 5: Peak performance of GPU vs BatchSize.
 
 
-##Matrix Factorization
+# Matrix Factorization
 After our optimizations, we explored other algorithmic changes/approximations within LSTM cell that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. 
 
 
@@ -135,16 +135,16 @@ Factorized LSTM : 8.36ms
 
 
 
-##Compiler Optimization for LSTM using XLA
+# Compiler Optimization for LSTM using XLA
 
 Google recently launched a Just-in-Time compilation toolchain for TensorFlow called XLA. This is a Accelerated Linear Algebra tool chain which fuses multiple operations within the dataflow graph of TensorFlow and generates a in-memory binary using LLVM backend. Across iterations, the same binary is invoked to perform computations. We wanted to analyze the speedup and efficiency of XLA for LSTMs and we performed a few experiments on the same. On a Intel i5 1.6Ghz CPU, we saw significant improvement in performance with XLA. We experimented with an LSTM cell of size 1024 and compared the perfomance with XLA and without XLA. The Speedup achieved with XLA as the matrix size increases from 10 to 1024. This is mainly due to the the JIT compilation overhead for smaller matricies. As shown in Figure 6, XLA's JIT compilation provides significant improvement for larger matricies. 
 
 
 ![](/images/Figure7.png?raw=true)
-#Figure 7: Speedup with XLA for LSTM vs Matrix Size. 
+### Figure 7: Speedup with XLA for LSTM vs Matrix Size. 
 
 ![](/images/Figure8.png?raw=true)
-#Figure 8: Memory consumption for LSTM cells with and without XLA.
+### Figure 8: Memory consumption for LSTM cells with and without XLA.
 
 One of the key optimizations that XLA performs is the elimination of intermediate buffers by fusing operations. As shown in Figure 7, the memory consumption without XLA is approximately 22.5GB and 5.12GB with XLA. Due to large memory requirements, the memory bandwidth requirement increases. Due to swapping and memory latency, the cpu spends most of the time waiting for the data. XLA clearly improves the performance in this aspect for LSTMs.
 
