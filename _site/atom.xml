@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://parthchadha.github.io/atom.xml" rel="self"/>
  <link href="http://parthchadha.github.io/"/>
- <updated>2017-05-12T20:37:18-04:00</updated>
+ <updated>2017-05-13T00:41:15-04:00</updated>
  <id>http://parthchadha.github.io</id>
  <author>
    <name>Parth Chadha</name>
@@ -18,6 +18,8 @@
      <updated>2017-10-04T00:00:00-04:00</updated>
      <id>http://parthchadha.github.io/posts/2017/10/04/Parallel_418</id>
      <content type="html">&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/04/10/mid_report_418.html&quot;&gt;Mid term checkpoint&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/05/12/final_report.html&quot;&gt;Final report Line&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2&gt;Team&lt;/h2&gt;
 
@@ -173,7 +175,7 @@ Equations describing LSTM network:&lt;/p&gt;
 
 &lt;p&gt;We explored the implementation of LSTM using Halide and found that the scheduling policies used in Halide is not optimal/suitable for RNN type neural networks. Instead of starting with DSL implementation, we started working on CUDA implementation of LSTM networks as we think this optimization is key for the goal of term project. Once we have an optimized LSTM kernels, we can link them up with a general purpose framework. We have a generic framework setup in C++ which we can use to call our optimized kernels.&lt;/p&gt;
 
-&lt;h3&gt;Current implementation:&lt;/h3&gt;
+&lt;h3&gt;Post Mid-term implementation:&lt;/h3&gt;
 
 &lt;p&gt;We used the equations as described in Background section to implement the LSTM structure on CUDA. The current baseline version is a naive implementation using cuBLAS library for General purpose matrix multiplication &lt;code&gt;(GEMM)&lt;/code&gt;. Although GEMM is highly optimized for GPUs, it does not utilize all the parallelism that can be extracted as the matrix sizes are inherently small.
 The current implmentation uses 8 GEMM operations, 4 for multiplying input $x_{t}$ with $\theta_{xi},\theta_{xf},\theta_{xo},\theta_{xg}$ and 4 for multiplying $h_{t-1}$ with $\theta_{hi},\theta_{hf},\theta_{ho},\theta_{hg}$.&lt;/p&gt;
@@ -206,8 +208,6 @@ The current implmentation uses 8 GEMM operations, 4 for multiplying input $x_{t}
 
 &lt;p&gt;With our proposed optimizations, we expect the runtime to reduce significantly. &lt;/p&gt;
 
-&lt;p&gt;// COMMENT -- STARTING to WRITE FROM HERE. BY TEJUS&lt;/p&gt;
-
 &lt;h2&gt;Optimizations&lt;/h2&gt;
 
 &lt;p&gt;&lt;img src=&quot;/images/Figure2.png?raw=true&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
@@ -221,7 +221,7 @@ The current implmentation uses 8 GEMM operations, 4 for multiplying input $x_{t}
 &lt;li&gt;&lt;p&gt;Streaming GEMMs: There are multiple computations in LSTM which are completely independent of each other. Our baseline code does not exploit this feature and all the computations are done sequentially even if they are independent. Using the Nvidia Stream feature, we can launch multiple kernels which are independent of each other and perform the computation in parallel. With this optimization, we achieve a speedup of 1.82x.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Fuse Point-Wise Operations: LSTM computation invloves a lot of point wise operations like tanh, addition and sigmoid. The baseline implementation launches multiple kernels to perform these operations. Launching of multiple kernels in this case is an overhead. We fuse these operations into a single kernel to overcome this inefficiency. With just this optimization, we achieve a speedup of 1.2x. The speedup with this optimization is not significant as compared to the previous speedups. The reason for this is that the amount of point-wise operations is smaller when compared to the overall computations of LSTM.&lt;/p&gt;&lt;/li&gt;
 &lt;li&gt;&lt;p&gt;Transposing weight matrix: An obvious optimization to improve the cache locality is to transpose one of the matrix before performing the matrix multiplication. With this optimization, we achieve a speedup of 1.063x. Again, the speedup achieved with only this optimization is not significant. The matrix size is small and multiple operations are not combined into a single GEMM execution. The overhead of performing matrix transpose is high and hence the speedup is less. &lt;/p&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Many Layer Optimization: As shown in Figure 1, once the computation of first time sequence of first layer &lt;code&gt;(L0,0)&lt;/code&gt; is completed, in our naive implementation we move on to second time step &lt;code&gt;(L0,1)&lt;/code&gt; in the same layer. However, since we have the computed output from &lt;code&gt;(L0,0)&lt;/code&gt;, we can also parallely work on &lt;code&gt;(L1,0)&lt;/code&gt; cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS. This optimization helped us achieve a speedup of 1.30x. However, this scheduling algorithm cannot be used with all LSTM networks. This optimization can (************* EXPLAIN THIS PROPERLY **************)&lt;/p&gt;&lt;/li&gt;
+&lt;li&gt;&lt;p&gt;Many Layer Optimization: As shown in Figure 1, once the computation of first time sequence of first layer &lt;code&gt;(L0,0)&lt;/code&gt; is completed, in our naive implementation we move on to second time step &lt;code&gt;(L0,1)&lt;/code&gt; in the same layer. However, since we have the computed output from &lt;code&gt;(L0,0)&lt;/code&gt;, we can also parallely work on &lt;code&gt;(L1,0)&lt;/code&gt; cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS. This optimization helped us achieve a speedup of 1.30x. However, this scheduling algorithm can be used in algorithms for which we have the complete input sequence like in case of sequence to sequence models. However in case of image captioning systems, where the next step input is calculate from the first inputs LSTM output, this scheduling policy is not applicable.&lt;/p&gt;&lt;/li&gt;
 &lt;/ol&gt;
 
 &lt;h2&gt;Results&lt;/h2&gt;
@@ -248,10 +248,25 @@ By adding the Fuse Point-Wise operations optimization we were able to achieve a 
 
 &lt;h2&gt;Matrix Factorization&lt;/h2&gt;
 
-&lt;p&gt;After our optimizations, we explored other algorithmic changes that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. Within this equation we replace W (weight matrix) with two small matricies  ************ EXPLAIN THIS ************
-&lt;img src=&quot;/images/Figure6.png?raw=true&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
+&lt;p&gt;After our optimizations, we explored other algorithmic changes/approximations within LSTM cell that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. &lt;/p&gt;
+
+&lt;p&gt;&lt;img src=&quot;/images/Figure6.png?raw=true&quot; alt=&quot;&quot;&gt;&lt;/p&gt;
 
 &lt;p&gt;*Figure 6: Matrix Factorization of LSTM&lt;/p&gt;
+
+&lt;p&gt;In this equations T is an affine transform $T = W * [x_t,h_{t-1}] + b$. The major part of the LSTM computation is spent in computing affine transform T as it involves the matrix multiplication with W which is of size 4n x 2p, where x and h are of dimension $n$ and i,f,o,g gates are of dimension $p$.&lt;/p&gt;
+
+&lt;p&gt;We can approximate W matrix as $W \approx W2 * W1$, where W1 is of size 2p x r and W2 is of size r x 4n. Note here we assume W can be approximated by a matrix of rank r.&lt;/p&gt;
+
+&lt;p&gt;Total number of parameters in W earlier: 2p * 4n&lt;/p&gt;
+
+&lt;p&gt;Total number of parameters in W after factorization: 2p * r + 4n * r&lt;/p&gt;
+
+&lt;p&gt;Computation time comparison for a LSTM configuration of hidden unit 256 and sequence length 100. Experiments were performed on Macbook Pro.&lt;/p&gt;
+
+&lt;p&gt;Standard LSTM   : 42.8ms&lt;/p&gt;
+
+&lt;p&gt;Factorized LSTM : 8.36ms&lt;/p&gt;
 
 &lt;h2&gt;Compiler Optimization for LSTM using XLA&lt;/h2&gt;
 
@@ -281,43 +296,6 @@ By adding the Fuse Point-Wise operations optimization we were able to achieve a 
 &lt;h2&gt;Platform Choice&lt;/h2&gt;
 
 &lt;p&gt;The GTX 1080 GPU&amp;#39;s on GHC.&lt;/p&gt;
-
-&lt;h2&gt;Schedule&lt;/h2&gt;
-
-&lt;ol&gt;
-&lt;li&gt;&lt;p&gt;Week 1 - April 10th - 16th&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Go through Halide source code and learn more about DSL&amp;#39;s and understand the limitations of Halide for the use of LSTM&amp;#39;s. &lt;strong&gt;DONE&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Have a in-depth understanding of LSTM&amp;#39;s implementation &lt;strong&gt;DONE&lt;/strong&gt; &lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Week 2 - April 17th - 23rd&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Have a naive working code for LSTM inference &lt;strong&gt;DONE&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Explore DSL&amp;#39;s implementation and start implementing a mini-DSL using Python &lt;strong&gt;Pushed to a later stage&lt;/strong&gt;&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Week 3 - April 24th - 30th&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Complete DSL implementation &lt;strong&gt;Custom C++ interface&lt;/strong&gt;&lt;/li&gt;
-&lt;li&gt;Explore cuBLAS and cuDNN library and possibly implement a naive basic block code generation&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Week 4 - May 1st - 7th&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Test and benchmark the naive implementation&lt;/li&gt;
-&lt;li&gt;Understand the existing bottlenecks in naive implementation&lt;/li&gt;
-&lt;li&gt;Perform optimizations on the current implementation for speedup!&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;li&gt;&lt;p&gt;Week 5 - May 8th - 12th&lt;/p&gt;
-
-&lt;ol&gt;
-&lt;li&gt;Perform more optimizations and achieve more speedup!&lt;/li&gt;
-&lt;li&gt;Documentation&lt;/li&gt;
-&lt;li&gt;If time permits, optimizing for back-propogation and train a network.&lt;/li&gt;
-&lt;/ol&gt;&lt;/li&gt;
-&lt;/ol&gt;
 
 &lt;h2&gt;References&lt;/h2&gt;
 
@@ -495,6 +473,8 @@ Link : https://arxiv.org/abs/1604.01946&lt;/li&gt;
      <updated>2017-04-10T00:00:00-04:00</updated>
      <id>http://parthchadha.github.io/posts/2017/04/10/Parallel_418</id>
      <content type="html">&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/04/10/mid_report_418.html&quot;&gt;Mid term checkpoint&lt;/a&gt;&lt;/p&gt;
+
+&lt;p&gt;&lt;a href=&quot;http://parthchadha.github.io/posts/2017/05/12/final_report.html&quot;&gt;Final report Line&lt;/a&gt;&lt;/p&gt;
 
 &lt;h2&gt;Team&lt;/h2&gt;
 

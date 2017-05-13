@@ -35,7 +35,7 @@ We plan to initially get familiar with Halide and understand more in depth about
 ## Mid-term checkpoint
 We explored the implementation of LSTM using Halide and found that the scheduling policies used in Halide is not optimal/suitable for RNN type neural networks. Instead of starting with DSL implementation, we started working on CUDA implementation of LSTM networks as we think this optimization is key for the goal of term project. Once we have an optimized LSTM kernels, we can link them up with a general purpose framework. We have a generic framework setup in C++ which we can use to call our optimized kernels.
 
-###Current implementation:
+###Post Mid-term implementation:
 We used the equations as described in Background section to implement the LSTM structure on CUDA. The current baseline version is a naive implementation using cuBLAS library for General purpose matrix multiplication `(GEMM)`. Although GEMM is highly optimized for GPUs, it does not utilize all the parallelism that can be extracted as the matrix sizes are inherently small.
 The current implmentation uses 8 GEMM operations, 4 for multiplying input $x\_{t}$ with $\theta\_{xi},\theta\_{xf},\theta\_{xo},\theta\_{xg}$ and 4 for multiplying $h\_{t-1}$ with $\theta\_{hi},\theta\_{hf},\theta\_{ho},\theta\_{hg}$.
 
@@ -62,7 +62,6 @@ LSTM Config:
 
 With our proposed optimizations, we expect the runtime to reduce significantly. 
 
-// COMMENT -- STARTING to WRITE FROM HERE. BY TEJUS
 
 
 ## Optimizations
@@ -80,8 +79,8 @@ As show in Figure 2, we implemented multiple optimizations to optimize the LSTM 
 
 4. Transposing weight matrix: An obvious optimization to improve the cache locality is to transpose one of the matrix before performing the matrix multiplication. With this optimization, we achieve a speedup of 1.063x. Again, the speedup achieved with only this optimization is not significant. The matrix size is small and multiple operations are not combined into a single GEMM execution. The overhead of performing matrix transpose is high and hence the speedup is less. 
 
-5. Many Layer Optimization: As shown in Figure 1, once the computation of first time sequence of first layer `(L0,0)` is completed, in our naive implementation we move on to second time step `(L0,1)` in the same layer. However, since we have the computed output from `(L0,0)`, we can also parallely work on `(L1,0)` cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS. This optimization helped us achieve a speedup of 1.30x. However, this scheduling algorithm cannot be used with all LSTM networks. This optimization can (************* EXPLAIN THIS PROPERLY **************)
-
+5. Many Layer Optimization: As shown in Figure 1, once the computation of first time sequence of first layer `(L0,0)` is completed, in our naive implementation we move on to second time step `(L0,1)` in the same layer. However, since we have the computed output from `(L0,0)`, we can also parallely work on `(L1,0)` cell. This inherent parallelism increases as we progress through the network and more LSTM cells can be computed in parallel. This scheduling policy is expected to give the most boost in GFLOPS. This optimization helped us achieve a speedup of 1.30x. However, this scheduling algorithm can be used in algorithms for which we have the complete input sequence like in case of sequence to sequence models. However in case of image captioning systems, where the next step input is calculate from the first inputs LSTM output, this scheduling policy is not applicable.
+ 
 
 ## Results
 The speedups mentioned in the previous section is for each individual optimization compared to the baseline. We combined multiple combinations of these optimizations and we achieve a speedup of 7.98x overall. The experiments were run with 4 layers of LSTM, each with 100 time sequences, 512 hidden units and 64 batch size. 
@@ -107,10 +106,33 @@ We performed a similar analysis with our fully optimized code. With an initial b
 
 
 ##Matrix Factorization
-After our optimizations, we explored other algorithmic changes that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. Within this equation we replace W (weight matrix) with two small matricies  ************ EXPLAIN THIS ************
+After our optimizations, we explored other algorithmic changes/approximations within LSTM cell that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. 
+
+
 ![](/images/Figure6.png?raw=true)
 
 *Figure 6: Matrix Factorization of LSTM
+
+
+In this equations T is an affine transform $T = W * [x\_t,h\_{t-1}] + b$. The major part of the LSTM computation is spent in computing affine transform T as it involves the matrix multiplication with W which is of size 4n x 2p, where x and h are of dimension $n$ and i,f,o,g gates are of dimension $p$.
+
+We can approximate W matrix as $W \approx W2 * W1$, where W1 is of size 2p x r and W2 is of size r x 4n. Note here we assume W can be approximated by a matrix of rank r.
+
+
+Total number of parameters in W earlier: 2p * 4n
+
+
+Total number of parameters in W after factorization: 2p * r + 4n * r
+
+Computation time comparison for a LSTM configuration of hidden unit 256 and sequence length 100. Experiments were performed on Macbook Pro.
+
+
+Standard LSTM   : 42.8ms
+
+
+Factorized LSTM : 8.36ms
+
+
 
 ##Compiler Optimization for LSTM using XLA
 Google recently launched a Just-in-Time compilation toolchain for TensorFlow called XLA. This is a Accelerated Linear Algebra tool chain which fuses multiple operations within the dataflow graph of TensorFlow and generates a in-memory binary using LLVM backend. Across iterations, the same binary is invoked to perform computations. We wanted to analyze the speedup and efficiency of XLA for LSTMs and we performed a few experiments on the same. On a Intel i5 1.6Ghz CPU, we saw significant improvement in performance with XLA. We experimented with an LSTM cell of size 1024 and compared the perfomance with XLA and without XLA. The Speedup achieved with XLA as the matrix size increases from 10 to 1024. This is mainly due to the the JIT compilation overhead for smaller matricies. As shown in Figure 6, XLA's JIT compilation provides significant improvement for larger matricies. 
@@ -138,31 +160,6 @@ In conclusion, we aimed to improve the performance of LSTM forward propogation o
 ## Platform Choice
 The GTX 1080 GPU's on GHC.
 
-## Schedule
-1. Week 1 - April 10th - 16th
-    
-    1. Go through Halide source code and learn more about DSL's and understand the limitations of Halide for the use of LSTM's. **DONE**
-    2. Have a in-depth understanding of LSTM's implementation **DONE** 
-
-2. Week 2 - April 17th - 23rd
-    1. Have a naive working code for LSTM inference **DONE**
-    2. Explore DSL's implementation and start implementing a mini-DSL using Python **Pushed to a later stage**
-
-3. Week 3 - April 24th - 30th
-
-    1. Complete DSL implementation **Custom C++ interface**
-    2. Explore cuBLAS and cuDNN library and possibly implement a naive basic block code generation
-    
-4. Week 4 - May 1st - 7th
-
-    1. Test and benchmark the naive implementation
-    2. Understand the existing bottlenecks in naive implementation
-    3. Perform optimizations on the current implementation for speedup!
-    
-5. Week 5 - May 8th - 12th
-    1. Perform more optimizations and achieve more speedup!
-    2. Documentation
-    3. If time permits, optimizing for back-propogation and train a network.
 
 ##References
 1. Optimizing Performance of Recurrent Neural Networks on GPUs
