@@ -136,6 +136,7 @@ Factorized LSTM : 8.36ms
 
 
 ##Compiler Optimization for LSTM using XLA
+
 Google recently launched a Just-in-Time compilation toolchain for TensorFlow called XLA. This is a Accelerated Linear Algebra tool chain which fuses multiple operations within the dataflow graph of TensorFlow and generates a in-memory binary using LLVM backend. Across iterations, the same binary is invoked to perform computations. We wanted to analyze the speedup and efficiency of XLA for LSTMs and we performed a few experiments on the same. On a Intel i5 1.6Ghz CPU, we saw significant improvement in performance with XLA. We experimented with an LSTM cell of size 1024 and compared the perfomance with XLA and without XLA. The Speedup achieved with XLA as the matrix size increases from 10 to 1024. This is mainly due to the the JIT compilation overhead for smaller matricies. As shown in Figure 6, XLA's JIT compilation provides significant improvement for larger matricies. 
 
 
