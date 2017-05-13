@@ -66,7 +66,8 @@ With our proposed optimizations, we expect the runtime to reduce significantly.
 
 
 ## Optimizations
-![](images/Figure2.png?raw=true)
+![](/images/Figure2.png?raw=true)
+
 *Figure 2 : Optimizations 
 
 As show in Figure 2, we implemented multiple optimizations to optimize the LSTM forward propagation code. We achieve a speedup of 7.98x over the baseline implementation. We have used cuBLAS version 2 in our implimentation to acheive the performance gain.
@@ -85,10 +86,10 @@ As show in Figure 2, we implemented multiple optimizations to optimize the LSTM 
 ## Results
 The speedups mentioned in the previous section is for each individual optimization compared to the baseline. We combined multiple combinations of these optimizations and we achieve a speedup of 7.98x overall. The experiments were run with 4 layers of LSTM, each with 100 time sequences, 512 hidden units and 64 batch size. 
 
-![](images/Figure3.png?raw=true)
+![](/images/Figure3.png?raw=true)
 *Figure 3: Speedup with various optimizations
 
-![](images/Figure4.png?raw=true)
+![](/images/Figure4.png?raw=true)
 *Figure 4: Runtimes with various optimizations.
 
 Figure 3 and 4 shows the performance of various optimizations with respect to speedup and runtimes. Combining optimizations 1 and 2, we achieve a speedup of 3.74x. In this case, GEMM operations are combined to form a larger matrix and we also use Stream feature to perform independent computations in parallel. 
@@ -101,23 +102,24 @@ We used nvprof to profile our baseline code to evaluate the performance across v
 We performed a similar analysis with our fully optimized code. With an initial batchsize of 32, we achieve 2.44TFLOPS which is higher than the best case performance of the baseline. However, as the batchsize increases, the GPU hits a peak of 6.35TFLOPS and continues to remain around the same range for higher batchsizes. The comparison of the peak performance is shown in Figure 5.
 
 
-![](images/Figure5.png?raw=true)
+![](/images/Figure5.png?raw=true)
 *Figure 5: Peak performance of GPU vs BatchSize.
 
 
 ##Matrix Factorization
 After our optimizations, we explored other algorithmic changes that were possible to improve the performance further. One technique was to reduce the number of weights (parameters) within an LSTM cell. Figure 6 shows the computation within an LSTM cell. Within this equation we replace W (weight matrix) with two small matricies  ************ EXPLAIN THIS ************
-![](images/Figure6.png?raw=true)
+![](/images/Figure6.png?raw=true)
+
 *Figure 6: Matrix Factorization of LSTM
 
 ##Compiler Optimization for LSTM using XLA
 Google recently launched a Just-in-Time compilation toolchain for TensorFlow called XLA. This is a Accelerated Linear Algebra tool chain which fuses multiple operations within the dataflow graph of TensorFlow and generates a in-memory binary using LLVM backend. Across iterations, the same binary is invoked to perform computations. We wanted to analyze the speedup and efficiency of XLA for LSTMs and we performed a few experiments on the same. On a Intel i5 1.6Ghz CPU, we saw significant improvement in performance with XLA. We experimented with an LSTM cell of size 1024 and compared the perfomance with XLA and without XLA. The Speedup achieved with XLA as the matrix size increases from 10 to 1024. This is mainly due to the the JIT compilation overhead for smaller matricies. As shown in Figure 6, XLA's JIT compilation provides significant improvement for larger matricies. 
 
 
-![](images/Figure7.png?raw=true)
+![](/images/Figure7.png?raw=true)
 #Figure 7: Speedup with XLA for LSTM vs Matrix Size. 
 
-![](images/Figure8.png?raw=true)
+![](/images/Figure8.png?raw=true)
 #Figure 8: Memory consumption for LSTM cells with and without XLA.
 
 One of the key optimizations that XLA performs is the elimination of intermediate buffers by fusing operations. As shown in Figure 7, the memory consumption without XLA is approximately 22.5GB and 5.12GB with XLA. Due to large memory requirements, the memory bandwidth requirement increases. Due to swapping and memory latency, the cpu spends most of the time waiting for the data. XLA clearly improves the performance in this aspect for LSTMs.
