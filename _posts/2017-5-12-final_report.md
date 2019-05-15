@@ -1,12 +1,8 @@
 ---
 layout: post
-title: Optimizing LSTM's on GPU with scheduling - Optim-LSTM
+title: Optimizing LSTM's on GPU with scheduling
 category: posts
 ---
-
-##Team
-1. Tejus S, AndrewID : tsiddaga
-2. Parth Chadha, AndrewID: pchadha
 
 ## Summary
 In the Optim-LSTM project, we aim to produce a high-performance implementation of Long-Short Term Memory Network using Domain-Specific Languages such as Halide and/or using custom DSL. This would provide portability across different platforms and architectures.
@@ -163,7 +159,7 @@ In conclusion, we aimed to improve the performance of LSTM forward propogation o
 The GTX 1080 GPU's on GHC.
 
 
-##References
+## References
 1. Optimizing Performance of Recurrent Neural Networks on GPUs
     Link : https://arxiv.org/abs/1604.01946
 2. https://devblogs.nvidia.com/parallelforall/  optimizing-recurrent-neural-networks-cudnn-5/
