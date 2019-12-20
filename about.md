@@ -2,10 +2,11 @@
 layout: post
 title: About Me
 ---
-## Intro
-I am a Master's student at Carnegie Mellon University in [ECE](https://www.ece.cmu.edu) department exploring Machine Learning and underlying Systems design.  
+<!-- ## Introduction
+ -->
+I am a Deep Learning Software Engineer at NVIDIA. Before joining NVIDIA, I worked as a ML engineer at [Markov Corporation](https://level.ai/engineers/2019/1/27/j28w3xrp8m1x4xmkdw7zzkz2svq2j6). I received my Masters in ECE from Carnegie Mellon University where I explored Machine Learning and the underlying systems design. Some of the interesting courserwork I took at CMU include [Machine Learning 10-701](http://www.cs.cmu.edu/~mgormley/courses/10701-f16/),  [Deep Reinforcement Learning and Control](https://www.andrew.cmu.edu/course/10-703/) and [Parallel Computer Architecture and Programming](http://15418.courses.cs.cmu.edu/spring2017/).
 
-My course list at CMU 
+<!-- My course list at CMU 
 
 1. [Machine Learning 10-701](http://www.cs.cmu.edu/~mgormley/courses/10701-f16/) [Project Report](ML701_final_report.pdf)
 2. Real-Time Embedded Systems
@@ -21,10 +22,11 @@ Before joining CMU for graduate studies, I had been working on building [Afforda
 
 I presented my work on using novel discrete memristor to develop applications such programmable analog circuits at MemTDAC workshop, HiPEAC Conference'14. [Paper Link](paper1.pdf)
 
-[Resume](parth_chadha_cv.pdf)
-
-## Why
-I would love to post topics that might help someone someday!
+ -->
+<!-- ## Why
+ -->
+ I would love to post topics that might help someone someday!
 Feel free to [ping me on twitter](https://twitter.com/parth_29).
+
 
 Thanks for reading!

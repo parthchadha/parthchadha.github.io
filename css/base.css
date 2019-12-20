@@ -95,10 +95,10 @@ a {
     color: #111;
     text-decoration: none; }
   .content h1 {
-    font-size: 36px;
+    font-size: 28px;
     margin: 18px 0 5px 0; }
   .content h2 {
-    font-size: 30px;
+    font-size: 22px;
     margin-bottom: 15px; }
   .content h3 {
     color: #777;
@@ -106,7 +106,7 @@ a {
     padding-bottom: 5px;
     margin-bottom: 10px; }
   .content p {
-    font-size: 16px;
+    font-size: 12px;
     margin-top: 0;
     margin-bottom: 1.2em;
     line-height: 1.7em; }
@@ -131,7 +131,7 @@ a {
     line-height: 1.4em; }
   .content blockquote {
     font-style: italic;
-    font-size: 14px;
+    font-size: 12px;
     padding: .25em 1em;
     margin: 1em 1em 0 1em;
     color: #444; }
@@ -164,7 +164,7 @@ a {
       margin: 0;
       padding: 0; }
     .content .listing li {
-      font-size: 13px;
+      font-size: 12px;
       list-style: none;
       padding: 5px 3px;
       margin: 0;
