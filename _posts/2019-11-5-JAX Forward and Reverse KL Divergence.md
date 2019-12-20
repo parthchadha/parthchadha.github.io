@@ -127,7 +127,7 @@ $$\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ Q_{\theta}
 
 The above objective samples points from $Q_{\theta}(x)$ and tries to maximize the likelihood of these points under $P(x)$. Here the entropy term prevents $Q_{\theta}(x)$ to collapse to a single point. Reverse KL does not require $Q(x)$ to cover all points under $P(x)$ and just requires points under $Q(x)$ to have high likelihood under $P(x)$.
 
-Using reverse-KL is difficult in practice because in real world problems we don't have the true underlying distribution $P(x)$ and hence can not evaluate the term $\mathbf{E}_{x\backsim\ Q_{\theta}} \big[-log P(X)\big]$. As mentioned in [1][2], we can use GAN which can allow minimization of divergences which are otherwise impossible to minimize directly. 
+Using reverse-KL is difficult in practice because in real world problems we don't have the true underlying distribution $P(x)$ and hence can not evaluate the term $\mathbf{E}_{x\backsim\ Q_{\theta}}\big[-log P(X)\big]$. As mentioned in [1][2], we can use GAN which can allow minimization of divergences which are otherwise impossible to minimize directly. 
 
 ### Lets create a simple model
 
