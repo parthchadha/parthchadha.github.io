@@ -4,7 +4,7 @@ title: Forward and Reverse KL divergence with JAX
 category: posts
 ---
 
-### This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!
+This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!
 
 
 ```python
@@ -20,7 +20,7 @@ import itertools
 import matplotlib.patches as mpatches
 ```
 
-### Create mixture of gaussian data
+#### Create mixture of gaussian data
 
 
 ```python
@@ -50,7 +50,7 @@ data = onp.vstack([d for d in data_indices])
 data = (data - onp.min(data))/(onp.max(data) - onp.min(data))
 ```
 
-### First, lets use MLE to estimate parameters of a Gaussian that fits the underlying data distribution
+#### First, lets use MLE to estimate parameters of a Gaussian that fits the underlying data distribution
 
 Maximum Likelihood Estimation to estimate parameters of a gaussian distribution:
 
@@ -129,7 +129,7 @@ The above objective samples points from $Q_{\theta}(x)$ and tries to maximize th
 
 Using reverse-KL is difficult in practice because in real world problems we don't have the true underlying distribution $P(x)$ and hence can not evaluate the term $\mathbf{E}_{x\backsim\ Q_{\theta}}\big[-log P(X)\big]$. As mentioned in [1][2], we can use GAN which can allow minimization of divergences which are otherwise impossible to minimize directly. 
 
-### Lets create a simple model
+#### Lets create a simple model
 
 
 ```python
