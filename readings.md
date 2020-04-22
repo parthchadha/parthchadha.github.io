@@ -19,6 +19,7 @@ category: posts
 
  [Surely You're Joking, Mr. Feynman!](https://www.amazon.com/Surely-Feynman-Adventures-Curious-Character/dp/0393316041)
 
+ [Quantum Electrodynamics](https://www.amazon.com/Quantum-Electrodynamics-Frontiers-Physics-Richard/dp/0201360756)
 
 ### Misc
 
