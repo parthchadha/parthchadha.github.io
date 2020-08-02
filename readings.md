@@ -21,6 +21,9 @@ category: posts
 
  [Quantum Electrodynamics](https://www.amazon.com/Quantum-Electrodynamics-Frontiers-Physics-Richard/dp/0201360756)
 
+[Educated](https://www.goodreads.com/book/show/35133922-educated)
+
+
 ### Misc
 
 [Essence of linear algebra](https://www.3blue1brown.com/essence-of-linear-algebra-page)
