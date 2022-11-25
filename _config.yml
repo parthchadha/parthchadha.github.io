@@ -1,6 +1,6 @@
-#markdown: redcarpet
+title: Parth Chadha
 highlighter: pygments
-#permalink: /posts/:title
+markdown: kramdown
 rdiscount:
   extensions: [smart]
 
@@ -12,3 +12,4 @@ url: http://parthchadha.github.io
 description: What if human brain is hackable?
 twitter: parth_29
 
+#google_analytics: UA-153481261-1

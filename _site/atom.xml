@@ -4,7 +4,7 @@
  <title>Parth Chadha</title>
  <link href="http://localhost:4000/atom.xml" rel="self"/>
  <link href="http://localhost:4000/"/>
- <updated>2019-12-20T12:02:30-08:00</updated>
+ <updated>2022-11-24T15:31:17-08:00</updated>
  <id>http://localhost:4000</id>
  <author>
    <name>Parth Chadha</name>
@@ -13,22 +13,11 @@
  
    
    <entry>
-     <title>Test</title>
-     <link href="http://localhost:4000/2019/12/06/test.html"/>
-     <updated>2019-12-06T00:00:00-08:00</updated>
-     <id>http://localhost:4000/2019/12/06/test</id>
-     <content type="html">
-</content>
-   </entry>
-   
- 
-   
-   <entry>
      <title>Forward and Reverse KL divergence with JAX</title>
-     <link href="http://localhost:4000/posts/2019/11/05/JAX-Forward-and-Reverse-KL-Divergence.html"/>
+     <link href="http://localhost:4000/experiments/posts/2019/11/05/JAX-Forward-and-Reverse-KL-Divergence.html"/>
      <updated>2019-11-05T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2019/11/05/JAX Forward and Reverse KL Divergence</id>
-     <content type="html">&lt;h3 id=&quot;this-post-will-try-to-explain-the-differences-between-kl-and-reverse-kl-divergences-and-demonstrate-it-using-a-small-generative-model-trained-on-mixture-of-gaussian-dataset-i-will-be-using-jax-to-demonstrate-this-example&quot;&gt;This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!&lt;/h3&gt;
+     <id>http://localhost:4000/experiments/posts/2019/11/05/JAX Forward and Reverse KL Divergence</id>
+     <content type="html">&lt;p&gt;This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!&lt;/p&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;from __future__ import print_function
 import jax
@@ -42,7 +31,7 @@ import itertools
 import matplotlib.patches as mpatches
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;create-mixture-of-gaussian-data&quot;&gt;Create mixture of gaussian data&lt;/h3&gt;
+&lt;h4 id=&quot;create-mixture-of-gaussian-data&quot;&gt;Create mixture of gaussian data&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;p = 0.75
 batch_size=64
@@ -70,13 +59,13 @@ data = onp.vstack([d for d in data_indices])
 data = (data - onp.min(data))/(onp.max(data) - onp.min(data))
 &lt;/code&gt;&lt;/pre&gt;
 
-&lt;h3 id=&quot;first-lets-use-mle-to-estimate-parameters-of-a-gaussian-that-fits-the-underlying-data-distribution&quot;&gt;First, lets use MLE to estimate parameters of a Gaussian that fits the underlying data distribution&lt;/h3&gt;
+&lt;h4 id=&quot;first-lets-use-mle-to-estimate-parameters-of-a-gaussian-that-fits-the-underlying-data-distribution&quot;&gt;First, lets use MLE to estimate parameters of a Gaussian that fits the underlying data distribution&lt;/h4&gt;
 
 &lt;p&gt;Maximum Likelihood Estimation to estimate parameters of a gaussian distribution:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\mu_{ML} = \frac{1}{N} \sum_{n=1}^{N} x_{n}&lt;/script&gt;
+\[\mu_{ML} = \frac{1}{N} \sum_{n=1}^{N} x_{n}\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\Sigma_{ML} = \frac{1}{N} \sum_{n=1}^{N} (x_{n} - \mu)(x_{n} - \mu)^T&lt;/script&gt;
+\[\Sigma_{ML} = \frac{1}{N} \sum_{n=1}^{N} (x_{n} - \mu)(x_{n} - \mu)^T\]
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;# Plot the ground truth data
 fig, ax = plt.subplots(figsize=(6, 12))
@@ -102,13 +91,13 @@ ax.legend(handles=[groundtruth_patch, gendata_patch], loc=&quot;upper left&quot;
 
 &lt;p&gt;Kullback-Leibler divergence (KL divergence) is a measure of the information lost when q(x)is used to approximate p(x), where both p(x) and q(x) are probability distributions.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \bigg[log \frac{P(X)}{Q(X)}\bigg]&lt;/script&gt;
+\[D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \bigg[log \frac{P(X)}{Q(X)}\bigg]\]
 
 &lt;p&gt;The above equation can be further transformed to :&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \big[log P(X)\big] - \mathbf{E}_{x\backsim\ p} \big[logQ(X)\big]&lt;/script&gt;
+\[D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \big[log P(X)\big] - \mathbf{E}_{x\backsim\ p} \big[logQ(X)\big]\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big] - H(P(X))&lt;/script&gt;
+\[D_{KL}(P||Q) = \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big] - H(P(X))\]
 
 &lt;p&gt;The expected value term $\mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big]$ refers to the cross entropy between P and Q and the second term $H(P(X))$ represents the entropy of probability distribution P. Having high entropy value encourages the model to spread out the probability mass instead of collapsing to a single point.&lt;/p&gt;
 
@@ -117,26 +106,26 @@ ax.legend(handles=[groundtruth_patch, gendata_patch], loc=&quot;upper left&quot;
 &lt;h4 id=&quot;forward-kl&quot;&gt;Forward KL:&lt;/h4&gt;
 &lt;p&gt;Our goal here is to minimize the KL divergence between P(X) and $Q_{\theta}(X)$ such that there is minimum information loss and Q(X) best approximates the underlying data distribution.&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{*} = \operatorname*{argmin}_\theta D_{KL}(P(x)||Q_{\theta}(x))&lt;/script&gt;
+\[\theta^{*} = \operatorname*{argmin}_\theta D_{KL}(P(x)||Q_{\theta}(x))\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big] - H(P(X)&lt;/script&gt;
+\[\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big] - H(P(X)\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big]&lt;/script&gt;
+\[\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big]\]
 
 &lt;p&gt;From the above simplification we know that derivative of $H(P(x))$ with respect to $\theta$ is 0 and hence the only term to minimize is $\mathbf{E}_{x\backsim\ p} \big[-log Q(X)\big]$ which is equivalent to maximum likelihood estimation objective. This objective samples points from $P(x)$ and maximizes the likelihood of these points under Q(x). Forward KL divergence forces the $Q(x)$ distribution to spread out to cover as much points as possible under $P(X)$.&lt;/p&gt;
 
 &lt;h4 id=&quot;reverse-kl&quot;&gt;Reverse KL:&lt;/h4&gt;
 &lt;p&gt;We can state the reverse KL objective as :&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{*} = \operatorname*{argmin}_\theta D_{KL}(Q_{\theta}(x)||P(x))&lt;/script&gt;
+\[\theta^{*} = \operatorname*{argmin}_\theta D_{KL}(Q_{\theta}(x)||P(x))\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ Q_{\theta}} \big[-log P(X)\big] - H(Q_{\theta}(X))&lt;/script&gt;
+\[\theta^{*} =  \operatorname*{argmin}_\theta  \mathbf{E}_{x\backsim\ Q_{\theta}} \big[-log P(X)\big] - H(Q_{\theta}(X))\]
 
 &lt;p&gt;The above objective samples points from $Q_{\theta}(x)$ and tries to maximize the likelihood of these points under $P(x)$. Here the entropy term prevents $Q_{\theta}(x)$ to collapse to a single point. Reverse KL does not require $Q(x)$ to cover all points under $P(x)$ and just requires points under $Q(x)$ to have high likelihood under $P(x)$.&lt;/p&gt;
 
-&lt;p&gt;Using reverse-KL is difficult in practice because in real world problems we don’t have the true underlying distribution $P(x)$ and hence can not evaluate the term $\mathbf{E}&lt;em&gt;{x\backsim\ Q&lt;/em&gt;{\theta}} \big[-log P(X)\big]$. As mentioned in [1][2], we can use GAN which can allow minimization of divergences which are otherwise impossible to minimize directly.&lt;/p&gt;
+&lt;p&gt;Using reverse-KL is difficult in practice because in real world problems we don’t have the true underlying distribution $P(x)$ and hence can not evaluate the term $\mathbf{E}&lt;em&gt;{x\backsim\ Q&lt;/em&gt;{\theta}}\big[-log P(X)\big]$. As mentioned in [1][2], we can use GAN which can allow minimization of divergences which are otherwise impossible to minimize directly.&lt;/p&gt;
 
-&lt;h3 id=&quot;lets-create-a-simple-model&quot;&gt;Lets create a simple model&lt;/h3&gt;
+&lt;h4 id=&quot;lets-create-a-simple-model&quot;&gt;Lets create a simple model&lt;/h4&gt;
 
 &lt;pre&gt;&lt;code class=&quot;language-python&quot;&gt;from jax.experimental import stax
 from jax import random
@@ -292,9 +281,9 @@ print(&quot;Plotting with reverse KL divergence loss&quot;)
    
    <entry>
      <title>Optimizing LSTM's on GPU with scheduling</title>
-     <link href="http://localhost:4000/posts/2017/05/12/final_report.html"/>
+     <link href="http://localhost:4000/experiments/posts/2017/05/12/final_report.html"/>
      <updated>2017-05-12T00:00:00-07:00</updated>
-     <id>http://localhost:4000/posts/2017/05/12/final_report</id>
+     <id>http://localhost:4000/experiments/posts/2017/05/12/final_report</id>
      <content type="html">&lt;h2 id=&quot;summary&quot;&gt;Summary&lt;/h2&gt;
 &lt;p&gt;In the Optim-LSTM project, we aim to produce a high-performance implementation of Long-Short Term Memory Network using Domain-Specific Languages such as Halide and/or using custom DSL. This would provide portability across different platforms and architectures.&lt;/p&gt;
 
@@ -303,17 +292,17 @@ print(&quot;Plotting with reverse KL divergence loss&quot;)
 RNN’s when back-propogated over a large number of time-steps, face a problem of diminished value of gradients. With the presence of memory cell in LSTM’s, we can have continuous gradient flow which helps in learning long-term dependencies.
 Equations describing LSTM network:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;i\_{t} = sigm(\theta\_{xi} X\_{t} + \theta\_{hi} h\_{t-1} + b\_{i})&lt;/script&gt;
+\[i\_{t} = sigm(\theta\_{xi} X\_{t} + \theta\_{hi} h\_{t-1} + b\_{i})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\_{t} = sigm(\theta\_{xf} X\_{t} + \theta\_{hf} h\_{t-1} + b\_{f})&lt;/script&gt;
+\[f\_{t} = sigm(\theta\_{xf} X\_{t} + \theta\_{hf} h\_{t-1} + b\_{f})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;o\_{t} = sigm(\theta\_{xo} X\_{t} + \theta\_{ho} h\_{t-1} + b\_{o})&lt;/script&gt;
+\[o\_{t} = sigm(\theta\_{xo} X\_{t} + \theta\_{ho} h\_{t-1} + b\_{o})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;g_{t} = sigm(\theta\_{xg} X\_{t} + \theta\_{hg} h\_{t-1} + b\_{g})&lt;/script&gt;
+\[g_{t} = sigm(\theta\_{xg} X\_{t} + \theta\_{hg} h\_{t-1} + b\_{g})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;c_{t} = f\_{t} \cdot c\_{t-1} + i\_{t} \cdot g\_{t}&lt;/script&gt;
+\[c_{t} = f\_{t} \cdot c\_{t-1} + i\_{t} \cdot g\_{t}\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_{t} = o\_{t} \cdot tanh(c\_{t-1})&lt;/script&gt;
+\[h_{t} = o\_{t} \cdot tanh(c\_{t-1})\]
 
 &lt;p&gt;The cost involved in evaluating these networks is dominated by Matrix Matrix Multiplication operation, GEMM operation in BLAS libraries. A naive implementation would perform eight matrix-matrix multiplications, 4 with inputs and 4 with previous state vectors. We plan to explore various optimizations around the naive implementation such as Combining Operations, Fusing Point Wise operations etc.&lt;/p&gt;
 
@@ -462,9 +451,9 @@ By adding the Fuse Point-Wise operations optimization we were able to achieve a 
    
    <entry>
      <title>Multimodal learning techniques - 1</title>
-     <link href="http://localhost:4000/posts/2016/02/07/visual_attention_2.html"/>
+     <link href="http://localhost:4000/experiments/posts/2016/02/07/visual_attention_2.html"/>
      <updated>2016-02-07T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2016/02/07/visual_attention_2</id>
+     <id>http://localhost:4000/experiments/posts/2016/02/07/visual_attention_2</id>
      <content type="html">&lt;h2 id=&quot;multimodal-distributed-representations&quot;&gt;Multimodal distributed representations&lt;/h2&gt;
 
 &lt;p&gt;###Goal: 
@@ -504,7 +493,7 @@ Captions are parsed into words, GloVe vector is extracted for each of these word
 Our aim is have low cost for similar visual-semantic pairs or high cost for disimilar pairs.
 For measuring similarity we use cosine similarity function (&lt;em&gt;we have same embedding dimension for image and caption&lt;/em&gt;).&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;Cost = \sum\_{x} \sum\_{k} max(0,\alpha - s(x,v) + s(x,v\_{k})) + \sum\_{v} \sum\_{k} max(0,\alpha - s(v,x) + s(v,x\_{k}))&lt;/script&gt;
+\[Cost = \sum\_{x} \sum\_{k} max(0,\alpha - s(x,v) + s(x,v\_{k})) + \sum\_{v} \sum\_{k} max(0,\alpha - s(v,x) + s(v,x\_{k}))\]
 
 &lt;p&gt;Here , x corresponds to image embedding, v to caption embedding, $x_{k}$ to contrastive image emedding and $v_{k}$ to contrastive caption embedding.&lt;/p&gt;
 
@@ -536,9 +525,9 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;
    
    <entry>
      <title>Multimodal learning techniques - 2</title>
-     <link href="http://localhost:4000/posts/2016/01/21/visual_attention.html"/>
+     <link href="http://localhost:4000/experiments/posts/2016/01/21/visual_attention.html"/>
      <updated>2016-01-21T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2016/01/21/visual_attention</id>
+     <id>http://localhost:4000/experiments/posts/2016/01/21/visual_attention</id>
      <content type="html">&lt;h2 id=&quot;encoder-decoder-network&quot;&gt;Encoder-Decoder Network&lt;/h2&gt;
 
 &lt;p&gt;It is a general framework using neural networks for mapping structured inputs to structured outputs.&lt;/p&gt;
@@ -550,18 +539,18 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;
 &lt;h3 id=&quot;encoders&quot;&gt;Encoders&lt;/h3&gt;
 
 &lt;p&gt;The encoder reads the input data &lt;em&gt;x&lt;/em&gt; and maps into a representation &lt;em&gt;c&lt;/em&gt;. 
-&lt;script type=&quot;math/tex&quot;&gt;c = f_{enc}(x)&lt;/script&gt;
+\(c = f_{enc}(x)\)
 In case of input as image, we use a CNN as encoder and extract features vector or &lt;em&gt;cube&lt;/em&gt; from convolutional layers.&lt;/p&gt;
 
 &lt;h3 id=&quot;decoders&quot;&gt;Decoders&lt;/h3&gt;
 
 &lt;p&gt;Decoder generates output &lt;em&gt;y&lt;/em&gt; conditioned on context &lt;em&gt;c&lt;/em&gt; of the input.
-&lt;script type=&quot;math/tex&quot;&gt;p(y \mid x) = f_{dec}(c)&lt;/script&gt;
+\(p(y \mid x) = f_{dec}(c)\)
 When are descibing image with natural language, we use RNN as a decoder.&lt;/p&gt;
 
 &lt;p&gt;As described in [1], RNN’s we use for this task are conditional language models (model distribution over sentences given an additional context &lt;em&gt;c&lt;/em&gt;).&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h\_{t} = \phi\_{\theta}(h\_{t-1},x,c)&lt;/script&gt;
+\[h\_{t} = \phi\_{\theta}(h\_{t-1},x,c)\]
 
 &lt;h3 id=&quot;issue-with-encoder-decoder-framework&quot;&gt;Issue with encoder-decoder framework&lt;/h3&gt;
 
@@ -575,7 +564,7 @@ When are descibing image with natural language, we use RNN as a decoder.&lt;/p&g
 
 &lt;p&gt;To incorporate structured representation of input, we want encoder to return a set of vectors describing the spatial or temporal component of input. 
 We refer $c$ to as context set, which is composed of fixed size vectors. The number of vectors in each example may vary. 
-&lt;script type=&quot;math/tex&quot;&gt;c = {c\_{1}, c\_{2}, \dots, c\_{M}}&lt;/script&gt;&lt;/p&gt;
+\(c = {c\_{1}, c\_{2}, \dots, c\_{M}}\)&lt;/p&gt;
 
 &lt;p&gt;The attention model controls what information is seen by the decoder and hence the pipeline is composed of encoder, attention model and then decoder.&lt;/p&gt;
 
@@ -584,12 +573,12 @@ We refer $c$ to as context set, which is composed of fixed size vectors. The num
 &lt;p&gt;$e_{i}^{t}$ signifies the scores and $\alpha_{i}^{t}$ signifies the attention weights given to each element of context vector $c$.&lt;/p&gt;
 
 &lt;p&gt;Scores $e_{i}^{t}$ are calculated as: 
-&lt;script type=&quot;math/tex&quot;&gt;e\_{i}^{t} = f\_{ATT}(z\_{t-1}, c\_{i}, {\alpha\_{j}^{t-1} })&lt;/script&gt;&lt;/p&gt;
+\(e\_{i}^{t} = f\_{ATT}(z\_{t-1}, c\_{i}, {\alpha\_{j}^{t-1} })\)&lt;/p&gt;
 
 &lt;p&gt;Attention weights $\alpha$ are calculated by applying &lt;em&gt;softmax&lt;/em&gt; to scores $e$.&lt;/p&gt;
 
 &lt;p&gt;Using attention weights and previous context vector, we can calculate the new context vector. In soft attention model, we calculate the new context vector as:
-&lt;script type=&quot;math/tex&quot;&gt;c^{t} = \sum_{i=1}^{M} \alpha\_{i}c\_{i}&lt;/script&gt;&lt;/p&gt;
+\(c^{t} = \sum_{i=1}^{M} \alpha\_{i}c\_{i}\)&lt;/p&gt;
 
 &lt;p&gt;With the new context vector $c^{t}$, we calculate the new state of decoder, which is RNN in image captioning case. $h_{t} = \phi_{\theta}(h_{t-1},x_{t},c_{t})$.&lt;/p&gt;
 
@@ -602,7 +591,7 @@ We refer $c$ to as context set, which is composed of fixed size vectors. The num
 &lt;h3 id=&quot;notations-for-recurrent-neural-network&quot;&gt;Notations for Recurrent neural network&lt;/h3&gt;
 
 &lt;p&gt;State transition is a function: 
-&lt;script type=&quot;math/tex&quot;&gt;h\_{t}^{l-1}, h\_{t-1}^{l} \rightarrow h\_{t}^{l}&lt;/script&gt;&lt;/p&gt;
+\(h\_{t}^{l-1}, h\_{t-1}^{l} \rightarrow h\_{t}^{l}\)&lt;/p&gt;
 
 &lt;h3 id=&quot;references&quot;&gt;References&lt;/h3&gt;
 
@@ -631,9 +620,9 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;
    
    <entry>
      <title>Torch-4 Recurrent Neural Networks, LSTM</title>
-     <link href="http://localhost:4000/posts/2016/01/04/torch_4.html"/>
+     <link href="http://localhost:4000/experiments/posts/2016/01/04/torch_4.html"/>
      <updated>2016-01-04T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2016/01/04/torch_4</id>
+     <id>http://localhost:4000/experiments/posts/2016/01/04/torch_4</id>
      <content type="html">&lt;h2 id=&quot;why-rnnlstm&quot;&gt;Why RNN/LSTM&lt;/h2&gt;
 &lt;p&gt;Traditional neural networks such as convolutional neural networks have been extremely powerful in recognition and classification tasks. On standard datasets they have levelled the human accuracy for object classification. But despite their success, they are not able to analyze sequence of inputs, which contain informaton across time dependencies.&lt;/p&gt;
 
@@ -652,17 +641,17 @@ Link : http://arxiv.org/abs/1507.01053&lt;/p&gt;
 
 &lt;p&gt;Equations describing LSTM network:&lt;/p&gt;
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;i\_{t} = sigm(\theta\_{xi} X\_{t} + \theta\_{hi} h\_{t-1} + b\_{i})&lt;/script&gt;
+\[i\_{t} = sigm(\theta\_{xi} X\_{t} + \theta\_{hi} h\_{t-1} + b\_{i})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;f\_{t} = sigm(\theta\_{xf} X\_{t} + \theta\_{hf} h\_{t-1} + b\_{f})&lt;/script&gt;
+\[f\_{t} = sigm(\theta\_{xf} X\_{t} + \theta\_{hf} h\_{t-1} + b\_{f})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;o\_{t} = sigm(\theta\_{xo} X\_{t} + \theta\_{ho} h\_{t-1} + b\_{o})&lt;/script&gt;
+\[o\_{t} = sigm(\theta\_{xo} X\_{t} + \theta\_{ho} h\_{t-1} + b\_{o})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;g_{t} = sigm(\theta\_{xg} X\_{t} + \theta\_{hg} h\_{t-1} + b\_{g})&lt;/script&gt;
+\[g_{t} = sigm(\theta\_{xg} X\_{t} + \theta\_{hg} h\_{t-1} + b\_{g})\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;c_{t} = f\_{t} \cdot c\_{t-1} + i\_{t} \cdot g\_{t}&lt;/script&gt;
+\[c_{t} = f\_{t} \cdot c\_{t-1} + i\_{t} \cdot g\_{t}\]
 
-&lt;script type=&quot;math/tex; mode=display&quot;&gt;h_{t} = o\_{t} \cdot tanh(c\_{t-1})&lt;/script&gt;
+\[h_{t} = o\_{t} \cdot tanh(c\_{t-1})\]
 
 &lt;p&gt;Below is the code snippet describing above equations using Torch.
 Please note this code is referenced from this &lt;a href=&quot;https://apaszke.github.io/lstm-explained.html&quot;&gt;excellent blog.&lt;/a&gt;&lt;/p&gt;
@@ -736,9 +725,9 @@ return nn.gModule(inputs,outputs)
    
    <entry>
      <title>Torch-3 Multi-layer perceptron</title>
-     <link href="http://localhost:4000/posts/2015/12/26/torch_3.html"/>
+     <link href="http://localhost:4000/experiments/posts/2015/12/26/torch_3.html"/>
      <updated>2015-12-26T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2015/12/26/torch_3</id>
+     <id>http://localhost:4000/experiments/posts/2015/12/26/torch_3</id>
      <content type="html">&lt;p&gt;Torch provides collection of blocks or abstract layers for building deep neural networks. 
 The nn library abstracts the calculation of errors and backpropogation of the error signals.&lt;/p&gt;
 
@@ -892,9 +881,9 @@ end
    
    <entry>
      <title>Torch-2 Data manipulation</title>
-     <link href="http://localhost:4000/posts/2015/12/25/torch_2.html"/>
+     <link href="http://localhost:4000/experiments/posts/2015/12/25/torch_2.html"/>
      <updated>2015-12-25T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2015/12/25/torch_2</id>
+     <id>http://localhost:4000/experiments/posts/2015/12/25/torch_2</id>
      <content type="html">&lt;h2 id=&quot;basic-data-manipulation-in-torch&quot;&gt;Basic data manipulation in Torch&lt;/h2&gt;
 &lt;p&gt;This section descibes basic manipulation with tensors in Torch.&lt;/p&gt;
 
@@ -957,9 +946,9 @@ print(t3)
    
    <entry>
      <title>Torch-1 Fundamentals</title>
-     <link href="http://localhost:4000/posts/2015/12/24/torch_1.html"/>
+     <link href="http://localhost:4000/experiments/posts/2015/12/24/torch_1.html"/>
      <updated>2015-12-24T00:00:00-08:00</updated>
-     <id>http://localhost:4000/posts/2015/12/24/torch_1</id>
+     <id>http://localhost:4000/experiments/posts/2015/12/24/torch_1</id>
      <content type="html">&lt;h2 id=&quot;abstract&quot;&gt;Abstract&lt;/h2&gt;
 &lt;p&gt;In this blog I aim to analyze the working of Torch and build a simple Neural Network. Much of this work has been adapted from numerous blog posts by inspiring researchers.&lt;/p&gt;
 

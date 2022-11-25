@@ -1,0 +1,50 @@
+body { margin: 60px auto; width: 65%; }
+
+a { text-decoration: underline; color: #0864c7; }
+a:hover { text-decoration: underline; }
+
+p { font-size: 0.9em; line-height: 1.5em; color: #333; font-family: 'Helvetica'; }
+p.abstract { font-size: 0.9em; color: grey; font-style: italic;}
+
+h1, h2, h3, h4 { font-family: 'Helvetica'; }
+h1 { font-size: 1.9em; }
+h2 { font-size: 1.6em; }
+h3 { font-size: 1.3em; }
+h4 { font-size: 1.1em; }
+
+.menu ul { font-size: 0.9em; font-family: 'Helvetica'; padding: 0px; list-style: none; text-align: right; float: right;}
+.menu ul li { font-size: 0.9em; font-family: 'Helvetica'; list-style: none; margin-right: 20px; margin-bottom: 5px; }
+
+.menu .main { font-size: 1.2em; }
+
+.container { float: left; width: 500px;}
+
+.post { font-size: 0.9em; font-family: 'Helvetica'; line-height: 1.5em; color: #333;}
+
+footer { border-top: 1px solid #d5d5d5; font-size: .8em; }
+
+/* Blog */
+ul.posts { font-size: 0.9em; color: #333; font-family: 'Helvetica'; }
+ul.posts li { font-size: 0.9em; list-style: none; color: #333; font-family: 'Helvetica';}
+
+
+/* Background Text on Main Page */ 
+.bgtext { color: #f9f8f7; font-size: 3em; font-family: 'Helvetica'; }
+
+/* CV */
+.cv { margin: 0px 0px 60px; }
+.cv h1 { font-size: 3em; }
+.cv h2 { font-size: 2em; }
+.cv address, .cv .download { font-family: 'Helvetica'; }
+.cv address, .cv p { font-size: 1.2em; }
+.cv .download { float: right; font-size: .8em; text-transform: uppercase; }
+
+.image--cover {
+    width: 150px;
+    height: 150px;
+    border-radius: 50%;
+    margin: 20px;
+  
+    object-fit: cover;
+    object-position: center right;
+  }
