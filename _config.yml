@@ -1,6 +1,6 @@
 title: Parth Chadha
 highlighter: pygments
-markdown: kramdown
+markdown: gfm
 rdiscount:
   extensions: [smart]
 
