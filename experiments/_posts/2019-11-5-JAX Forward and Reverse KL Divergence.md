@@ -7,6 +7,7 @@ category: posts
 This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!
 
 {% highlight python %}
+
 from __future__ import print_function
 import jax
 import jax.numpy as np
@@ -17,6 +18,7 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import itertools
 import matplotlib.patches as mpatches
+
 {% endhighlight %}
 
 
