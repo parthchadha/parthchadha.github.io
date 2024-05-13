@@ -4,6 +4,13 @@ layout: default
 <head>
 <link href="/assets/css/main.css" rel="stylesheet" type="text/css">
 </head>
+
+{% if page.usemathjax %}
+<script type="text/javascript" async
+ src="https://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-MML-AM_CHTML">
+  </script>
+{% end if %}
+
 <h4>{{ page.title }}</h4>
 <p class="meta">{{ page.date | date_to_string }}</p>
 
