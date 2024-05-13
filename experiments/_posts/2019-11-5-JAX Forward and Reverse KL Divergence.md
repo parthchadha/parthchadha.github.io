@@ -2,6 +2,7 @@
 layout: post
 title: Forward and Reverse KL divergence with JAX
 category: posts
+usemathjax: true
 ---
 
 This post will try to explain the differences between KL and reverse KL divergences and demonstrate it using a small generative model trained on mixture of gaussian dataset. I will be using JAX to demonstrate this example!
